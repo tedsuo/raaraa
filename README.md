@@ -6,7 +6,7 @@ A discreet photo sharing site for party people.
 - Image Serving
 - Resource Based Authentication
 - Friendings - how the * do they work?
-- Available Communication Channels
+- Available Communication Channels: admin and user-to-user
 
 ## Components
 - User

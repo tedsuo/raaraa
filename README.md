@@ -28,4 +28,4 @@ Transmits a friend request to another user, creates a Friending if the other use
 Trust relationship between two users.
 
 ### MutualAquaintances
-List of Users with a Friending that matches one of two given Users.  Updates whenever a referenced user updates their PhotoStream.
+List of Users with a Friending with both Users is an given Friending.

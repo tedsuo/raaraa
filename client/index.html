@@ -1,40 +1,50 @@
 <html>
 <head>
-  <style>
-body{
-background:#fc0;
-margin:0;
-padding:0;
-}
-#para-container{
-    background: none repeat scroll 0 0 #000000;
-    box-shadow: 0 0 45px #FFFFCC;
-    height: 80%;
-    left: 0;
-    position: fixed;
-    top: 10%;
-    width: 100%;
-}
-#para-body{
-}
-h1 {
-    bottom: 10%;
-    color: #FF00CC;
-    font-family: tahoma;
-    font-size: 28px;
-    margin-top: 0;
-    padding-top: 100px;
-    position: fixed;
-    right: 20px;
-    text-align: center;
-}
-  </style>
+  <link rel="stylesheet" href="/styles.css" type="text/css" />
 </head>
 <body>
-  <div id="para-container">
-    <div id="para-body">
-      <h1>PaaRaa</h1>
+  <div id="rara-container">
+    <div id="rara-body">
     </div>
+    <div id="logo">
+      <h1>RaaRaa</h1>
+      <h3>Party Party</h3>
+    </div>  
+    <div id="login">
+      <form id="signup">
+        <h2>Sign Up</h2>
+        <div class="field">
+          <label for="name">User</label>
+          <input name="name" type="text"/>
+        </div>
+        <div class="field">
+          <label for="pass">Pass</label>
+          <input name="pass" type="text"/>
+        </div>
+        <div class="field">
+          <label for="verify">Pass</label>
+          <input name="verify" type="text"/>
+        </div>  
+        <div class="field">
+          <input id="signup-submit" name="submit" type="submit" value="Sign Up"/>
+        </div>
+      </form>
+      <div id="divider"></div>
+      <form id="signin">
+        <h2>Sign In</h2>
+        <div class="field">
+          <label for="name">User</label>
+          <input name="name" type="text"/>
+        </div>
+        <div class="field">
+          <label for="pass">Pass</label>
+          <input name="pass" type="text"/>
+        </div>
+        <div class="field">
+          <input id="signup-submit" name="submit" type="submit" value="Sign Up"/>
+        </div>
+      </form>
+    </div> 
   </div>
 </body>
 </html>

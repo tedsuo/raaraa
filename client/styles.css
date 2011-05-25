@@ -1,0 +1,64 @@
+body{
+margin:0;
+padding:0;
+font-family: tahoma;
+color:#ffffff;
+}
+#rara-container{
+  background: -moz-linear-gradient(center top , #111111 0%,  #000000 50%, #000000 76%, #111111 100%) repeat scroll 0 0 transparent;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+#login{
+  left: 33%;
+  position: fixed;
+  top: 30%;
+  width: 450px;
+}
+#signup{
+  float: left;
+}
+#signin{
+  float: left;
+}
+#divider{
+  float: left;
+  height: 150px;
+  margin: 20px;
+  border-left:1px solid #ffffff;
+}
+.field{
+margin-bottom:5px;
+}
+label{
+  display: block;
+  float: left;
+  width: 40px;
+}
+#signup-submit{
+float:right;
+padding:6px;
+}
+#logo{
+bottom: 10%;
+right: 5%;
+position: fixed;
+text-align: justify;
+}
+h1{
+color: #FF00CC;
+font-size: 28px;
+margin: 0;
+}
+h3{
+    color: #FF00CC;
+    font-family: Verdana;
+    font-size: 14px;
+    line-height: 3px;
+    margin: 0;
+    position: fixed;
+    text-transform: uppercase;
+}

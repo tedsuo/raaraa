@@ -12,8 +12,7 @@ A discreet photo sharing site for party people.
 - User
 - Stream
 - Invite
-- Voyeur*
-- Exobisionist*
+- Viewers
 - Image
 - Shout
 - Uploader

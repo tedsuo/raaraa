@@ -5,17 +5,20 @@
 <body>
   <div id="rara-bg"></div>
   <div id="rara-container">
+
     <div id="content">
+    
       <div id="stream-controls">
         <a href="#stream/by_date" id="stream-date-sort-btn" class="sort-btn">By Date</a>
         <span>|</span>
         <a href="#stream/by_date" id="stream-date-sort-btn" class="sort-btn">Most Awesome</a>
       </div>
+      
       <ul id="stream">
         <li id="image-567">
           <img src="/img/medium/example-0.jpg" class="img-medium"/>
           <div class="img-meta">
-            <img src="/img/profile/example-0.jpg" class="profile-pic"/>
+            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
             <h3 class="name">tedsuo</h3>
             <a class="awesome-btn" href="#like/567">Awesome</a>
             <div class="clear"> </div>
@@ -27,7 +30,7 @@
         <li id="image-567">
           <img src="/img/medium/example-1.jpg" class="img-medium"/>
           <div class="img-meta">
-            <img src="/img/profile/example-2.jpg" class="profile-pic"/>
+            <img src="/img/profile/example-2.jpg" class="small-profile-pic"/>
             <h3 class="name">cooperq</h3>
             <a class="awesome-btn" href="#like/567">Awesome</a>
             <div class="clear"> </div>
@@ -39,7 +42,7 @@
         <li id="image-567">
           <img src="/img/medium/example-2.jpg" class="img-medium"/>
           <div class="img-meta">
-            <img src="/img/profile/example-0.jpg" class="profile-pic"/>
+            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
             <h3 class="name">tedsuo</h3>
             <a class="awesome-btn" href="#like/567">Awesome</a>
             <div class="clear"> </div>
@@ -49,12 +52,23 @@
           </p>
         </li>        
       </ul>
+      
     </div>
-    <div id="logo-sidebar" class="logo">
-      <h1>RaaRaa</h1>
-      <h3>Party Party</h3>
-    </div>    
-    <div id="sidebar">
+
+    <div id="sidebar-header">
+      <div id="logo-sidebar" class="logo">
+        <h1>RaaRaa</h1>
+        <h3>Party Party</h3>
+      </div>
+      <div id="sidebar-account">
+        <img src="/img/profile/example-3.jpg" class="small-profile-pic"/>
+        <h3 class="name">hainish</h3>
+        <a id="logout-btn" href="#logout">Logout</a>
+      </div>
+      <div class="clear"></div>
+    </div>
+    
+    <div class="sidebar">
       <a id="invite-btn" href="#invite">Invite</a>
       <a id="view-followers-btn" href="#invite">Who can see my photos?</a>      
       <div id="friends">
@@ -84,6 +98,38 @@
         </ul>
       </div>
     </div>
+
+    <div class="sidebar">
+      <div id="shouts">
+        <ul id="shouts-list">
+          <li>
+            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
+            <h3 class="name">tedsuo</h3>
+            <span class="shout">Heading to Tahoe this weekend it's gonna be awesome.</span>
+          </li>
+          <li>
+            <img src="/img/profile/example-2.jpg" class="small-profile-pic"/>
+            <h3 class="name">cooperq</h3>
+            <span class="shout">Did you see jenny puke in the punch bowl?</span>
+          </li>
+          <li>
+            <img src="/img/profile/example-1.jpg" class="small-profile-pic"/>
+            <h3 class="name">micahflee</h3>
+            <span class="shout">Hahah yeah that was epic.</span>
+          </li>
+          <li>
+            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
+            <h3 class="name">tedsuo</h3>
+            <span class="shout">Dude I had to clean that shit it was gross.</span>
+          </li>
+        </ul>
+        <div id="shout-form">
+          <input class="shout-text-input" name="text" type="text" />
+          <input name="submit" type="button" value="Say It"/>
+        </div>
+      </div>
+    </div>
+        
   </div>
 </body>
 </html>

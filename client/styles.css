@@ -108,28 +108,40 @@ float: left;
 margin: 20px 10px 20px 20px;
 padding: 25px;
 }
-#sidebar{
+.sidebar{
 border: 1px solid #ffffff;
 border-radius: 18px;
 width: 350px;
 float: left;
-margin: 20px;
+margin: 0 20px 20px 20px;
 padding: 10px 20px;
 }
+/* Sidebar Header */
+#sidebar-header{
+margin: 20px;
+float: left;
+width: 370px;
+}
 #logo-sidebar{
-margin: 20px 0 0 30px;
+margin-left: 10px;
 float: left;
 }
-/* Stream */
-.img-medium{
-max-width: 600px;
-max-height: 500px;
+#sidebar-account{
+margin: 10px 0 0 10px;
+float: right;
 }
+#sidebar-account h3{
+float: left;
+}
+#logout-btn{
+display: block;
+float: right;
+clear: left;
+line-height: 10px;
+}
+/* Stream */
 .img-meta{
 margin-top: 4px;
-}
-.img-meta .profile-pic{
-height: 20px;
 }
 .img-meta h3{
 float: left;
@@ -147,6 +159,7 @@ margin-bottom: 30px;
 position: relative;
 bottom: 8px;
 }
+
 /* Friends */
 #friends{
 margin-top: 10px;
@@ -158,11 +171,32 @@ margin: 8px 0;
 clear: both;
 height: 54px;
 }
+#view-followers-btn{
+float: right;
+}
+
+/* Shouts */
+.shout{
+display: block;
+float: left;
+width: 300px; 
+}
+.shout-text-input{
+width: 296px; 
+}
+/* Images */
 .profile-pic{
 float: left;
 height: 40px;
 margin-right: 6px;
 }
-#view-followers-btn{
-float: right;
+.small-profile-pic{
+height: 20px;
+float: left;
+margin-right: 6px;
+}
+
+.img-medium{
+max-width: 600px;
+max-height: 500px;
 }

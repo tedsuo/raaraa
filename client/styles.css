@@ -5,6 +5,7 @@ font-family: tahoma;
 color:#ffffff;
 }
 #rara-bg{
+  background-color: #000000;
   background: -moz-linear-gradient(center top , #111111 0%,  #000000 50%, #000000 76%, #111111 100%) repeat scroll 0 0 transparent;
   height: 100%;
   left: 0;

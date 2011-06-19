@@ -1,135 +1,47 @@
 <html>
 <head>
   <link rel="stylesheet" href="/styles.css" type="text/css" />
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui-1.8.13.custom.min.js"></script>
+  <script type="text/javascript" src="/js/proto.js"></script>
 </head>
 <body>
   <div id="rara-bg"></div>
   <div id="rara-container">
 
-    <div id="content">
     
-      <div id="stream-controls">
-        <a href="#stream/by_date" id="stream-date-sort-btn" class="sort-btn">By Date</a>
-        <span>|</span>
-        <a href="#stream/by_date" id="stream-date-sort-btn" class="sort-btn">Most Awesome</a>
-      </div>
-      
-      <ul id="stream">
-        <li id="image-567">
-          <img src="/img/medium/example-0.jpg" class="img-medium"/>
-          <div class="img-meta">
-            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
-            <h3 class="name">tedsuo</h3>
-            <a class="awesome-btn" href="#like/567">Awesome</a>
-            <div class="clear"> </div>
-          </div>
-          <p class="pic-description">
-            This google search result is a good example of why people need RaaRaa.
-          </p>
-        </li>
-        <li id="image-567">
-          <img src="/img/medium/example-1.jpg" class="img-medium"/>
-          <div class="img-meta">
-            <img src="/img/profile/example-2.jpg" class="small-profile-pic"/>
-            <h3 class="name">cooperq</h3>
-            <a class="awesome-btn" href="#like/567">Awesome</a>
-            <div class="clear"> </div>
-          </div>
-          <p class="pic-description">
-            This google search result is a good example for why people need RaaRaa.
-          </p>
-        </li>
-        <li id="image-567">
-          <img src="/img/medium/example-2.jpg" class="img-medium"/>
-          <div class="img-meta">
-            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
-            <h3 class="name">tedsuo</h3>
-            <a class="awesome-btn" href="#like/567">Awesome</a>
-            <div class="clear"> </div>
-          </div>
-          <p class="pic-description">
-            This google search result is a good example for why people need RaaRaa.
-          </p>
-        </li>        
-      </ul>
-      
-    </div>
-
-    <div id="sidebar-header">
-      <div id="logo-sidebar" class="logo">
+    <div id="header">
+    
+      <div id="header-logo" class="logo">
         <h1>RaaRaa</h1>
         <h3>Party Party</h3>
       </div>
-      <div id="sidebar-account">
+      
+      <div id="header-account">
         <img src="/img/profile/example-3.jpg" class="small-profile-pic"/>
         <h3 class="name">hainish</h3>
         <a id="logout-btn" href="#logout">Logout</a>
       </div>
-      <div class="clear"></div>
-    </div>
-    
-    <div class="sidebar">
+      
       <a id="invite-btn" href="#invite">Invite</a>
-      <a id="view-followers-btn" href="#invite">Who can see my photos?</a>      
-      <div id="friends">
-        <h4>Viewing</h4>
-        <ul id="viewing-list" class="friends-list">
-          <li>
-            <img src="/img/profile/example-0.jpg" class="profile-pic"/>
-            <h3 class="name">tedsuo</h3>
-            <a href="#ignore/123" class="ignore">Hide</a>
-            <a href="#delete/123" class="delete">Delete</a>            
-          </li>
-          <li>
-            <img src="/img/profile/example-2.jpg" class="profile-pic"/>
-            <h3 class="name">cooperq</h3>
-            <a href="#ignore/123" class="ignore">Hide</a>
-            <a href="#delete/123" class="delete">Delete</a>            
-          </li>
-        </ul>
-        <h4>Hidden</h4>
-        <ul id="hidden-list" class="friends-list">
-          <li>
-            <img src="/img/profile/example-1.jpg" class="profile-pic"/>
-            <h3 class="name">micahflee</h3>
-            <a href="#ignore/123" class="ignore">Show</a>
-            <a href="#delete/123" class="delete">Delete</a>            
-          </li>
-        </ul>
+      
+      <div id="content-selector">
+        <input id="show-photos" type="checkbox"/>
+        <label for="show-photos">Photos</label>
+        <input id="show-shouts" type="checkbox"/>
+        <label for="show-shouts">Shouts</label>
+        <input id="show-friends" type="checkbox"/>
+        <label for="show-friends">Friends</label>        
       </div>
-    </div>
-
-    <div class="sidebar">
-      <div id="shouts">
-        <ul id="shouts-list">
-          <li>
-            <img src="/img/profile/example-3.jpg" class="small-profile-pic"/>
-            <h3 class="name">hainish</h3>
-            <span class="shout">Heading to Tahoe this weekend it's gonna be awesome.</span>
-          </li>
-          <li>
-            <img src="/img/profile/example-2.jpg" class="small-profile-pic"/>
-            <h3 class="name">cooperq</h3>
-            <span class="shout">Did you see jenny puke in the punch bowl?</span>
-          </li>
-          <li>
-            <img src="/img/profile/example-1.jpg" class="small-profile-pic"/>
-            <h3 class="name">micahflee</h3>
-            <span class="shout">Hahah yeah that was epic.</span>
-          </li>
-          <li>
-            <img src="/img/profile/example-0.jpg" class="small-profile-pic"/>
-            <h3 class="name">tedsuo</h3>
-            <span class="shout">Dude I had to clean that shit it was gross.</span>
-          </li>
-        </ul>
-        <div id="shout-form">
-          <input class="shout-text-input" name="text" type="text" />
-          <input name="submit" type="button" value="Say It"/>
-        </div>
+      
+      <div class="clear"></div>
+      <div id="canvas">
+        <div id="col-1"></div>
+        <div id="col-2"></div>
+        <div id="col-3"></div>        
       </div>
+      <div id="footer"></div>
     </div>
-        
   </div>
 </body>
 </html>

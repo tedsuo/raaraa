@@ -14,7 +14,7 @@ color:#ffffff;
 }
 #rara-container{
 position: relative;
-width: 1150px;
+width: 1200px;
 margin: auto;
 }
 a{
@@ -79,7 +79,7 @@ text-transform: uppercase;
 .field{
 margin-bottom:5px;
 }
-label{
+#login label{
   display: block;
   float: left;
   width: 40px;
@@ -99,38 +99,26 @@ text-align: justify;
 }
 
 /* Two-Column Layout */
-#content{
+.content{
 border: 1px solid #ffffff;
 border-radius: 18px;
-width: 600px;
 min-height: 800px;
 float: left;
-margin: 20px 10px 20px 20px;
+margin: 20px 10px;
 padding: 25px;
 }
-.sidebar{
-border: 1px solid #ffffff;
-border-radius: 18px;
-width: 350px;
-float: left;
-margin: 0 20px 20px 20px;
-padding: 10px 20px;
+/* Header */
+#header{  
 }
-/* Sidebar Header */
-#sidebar-header{
-margin: 20px;
-float: left;
-width: 370px;
-}
-#logo-sidebar{
-margin-left: 10px;
+#header-logo{
+margin: 10px 20px;
 float: left;
 }
-#sidebar-account{
-margin: 10px 0 0 10px;
+#header-account{
+margin: 10px 20px 10px 10px;
 float: right;
 }
-#sidebar-account h3{
+#header-account h3{
 float: left;
 }
 #logout-btn{
@@ -138,6 +126,34 @@ display: block;
 float: right;
 clear: left;
 line-height: 10px;
+}
+#invite-btn{
+    border: 1px solid #123;
+    border-radius: 10px 10px 10px 10px;
+    float: left;
+    font-weight: bold;
+    margin: 20px;
+    padding: 4px 12px 6px;
+    text-decoration: none;
+    text-shadow: 1px 1px #DDEEFF;
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.13, #BFBFBF),
+    color-stop(0.57, #D7DFE0),
+    color-stop(0.79, #FFFFFF)
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    #BFBFBF 13%,
+    #D7DFE0 57%,
+    #FFFFFF 79%
+);
+}
+#content-selector{
+float: left;
+margin: 20px;
 }
 /* Stream */
 .img-meta{
@@ -151,6 +167,7 @@ float: right;
 }
 .pic-description{
 clear: both;
+width: 450px;
 }
 #stream li{
 margin-bottom: 30px;
@@ -172,7 +189,8 @@ clear: both;
 height: 54px;
 }
 #view-followers-btn{
-float: right;
+display:block;
+width:180px;
 }
 
 /* Shouts */
@@ -183,6 +201,10 @@ width: 300px;
 }
 .shout-text-input{
 width: 296px; 
+}
+#shout-form{
+margin-bottom: 20px;
+width: 350px;
 }
 /* Images */
 .profile-pic{
@@ -197,6 +219,10 @@ margin-right: 6px;
 }
 
 .img-medium{
-max-width: 600px;
+max-width: 450px;
 max-height: 500px;
+}
+.img-thumb{
+max-width: 150px;
+max-height: 150px;
 }

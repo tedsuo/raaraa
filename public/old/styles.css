@@ -1,0 +1,229 @@
+body{
+margin:0;
+padding:0;
+font-family: tahoma;
+color:#ffffff;
+}
+#rara-bg{
+  background-color: #000000;
+  background: -moz-linear-gradient(center top , #111111 0%,  #000000 50%, #000000 76%, #111111 100%) repeat scroll 0 0 transparent;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+#rara-container{
+position: relative;
+width: 1200px;
+margin: auto;
+}
+a{
+color: #1166ff;
+}
+ul{
+margin: 0;
+padding: 0;
+list-style: none;
+}
+h1{
+color: #FF00CC;
+font-size: 28px;
+margin: 0;
+}
+h3{
+color: #FF00CC;
+font-family: Verdana;
+font-size: 14px;
+margin: 0;
+font-variant: small-caps;
+text-transform: capitalize;
+}
+h2{
+margin: 0;
+}
+h4{
+margin: 0;
+}
+.clear{
+clear: both;
+}
+/* LOGO */
+.logo h3{
+color: #FF00CC;
+font-family: Verdana;
+font-size: 14px;
+line-height: 3px;
+margin: 0;
+text-transform: uppercase;
+}
+
+/* SIGN IN */
+#login{
+  left: 33%;
+  position: fixed;
+  top: 30%;
+  width: 450px;
+}
+#signup{
+  float: left;
+}
+#signin{
+  float: left;
+}
+#divider{
+  float: left;
+  height: 150px;
+  margin: 20px;
+  border-left:1px solid #ffffff;
+}
+.field{
+margin-bottom:5px;
+}
+#login label{
+  display: block;
+  float: left;
+  width: 40px;
+}
+#login h2{
+margin: 6px 0;
+}
+#signup-submit{
+float:right;
+padding:6px;
+}
+#logo-signup{
+bottom: 10%;
+right: 5%;
+position: fixed;
+text-align: justify;
+}
+
+/* Two-Column Layout */
+.content{
+border: 1px solid #ffffff;
+border-radius: 18px;
+min-height: 800px;
+float: left;
+margin: 20px 10px;
+padding: 25px;
+}
+/* Header */
+#header{  
+}
+#header-logo{
+margin: 10px 20px;
+float: left;
+}
+#header-account{
+margin: 10px 20px 10px 10px;
+float: right;
+}
+#header-account h3{
+float: left;
+}
+#logout-btn{
+display: block;
+float: right;
+clear: left;
+line-height: 10px;
+}
+#invite-btn{
+    border: 1px solid #123;
+    border-radius: 10px 10px 10px 10px;
+    float: left;
+    font-weight: bold;
+    margin: 20px;
+    padding: 4px 12px 6px;
+    text-decoration: none;
+    text-shadow: 1px 1px #DDEEFF;
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.13, #BFBFBF),
+    color-stop(0.57, #D7DFE0),
+    color-stop(0.79, #FFFFFF)
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    #BFBFBF 13%,
+    #D7DFE0 57%,
+    #FFFFFF 79%
+);
+}
+#content-selector{
+float: left;
+margin: 20px;
+}
+/* Stream */
+.img-meta{
+margin-top: 4px;
+}
+.img-meta h3{
+float: left;
+}
+.awesome-btn{
+float: right;
+}
+.pic-description{
+clear: both;
+width: 450px;
+}
+#stream li{
+margin-bottom: 30px;
+}
+#stream-controls{
+position: relative;
+bottom: 8px;
+}
+
+/* Friends */
+#friends{
+margin-top: 10px;
+}
+.friends-list{
+margin: 8px 0;
+}
+.friends-list li{
+clear: both;
+height: 54px;
+}
+#view-followers-btn{
+display:block;
+width:180px;
+}
+
+/* Shouts */
+.shout{
+display: block;
+float: left;
+width: 300px; 
+}
+.shout-text-input{
+width: 296px; 
+}
+#shout-form{
+margin-bottom: 20px;
+width: 350px;
+}
+/* Images */
+.profile-pic{
+float: left;
+height: 40px;
+margin-right: 6px;
+}
+.small-profile-pic{
+height: 20px;
+float: left;
+margin-right: 6px;
+}
+
+.img-medium{
+max-width: 450px;
+max-height: 500px;
+}
+.img-thumb{
+max-width: 150px;
+max-height: 150px;
+}

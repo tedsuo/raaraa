@@ -1,5 +1,6 @@
 config = {
-	session_secret: "changeme"
+  session_secret: "changeme",
+  encryption_key: "changeme"
 };
 
 module.exports = config;

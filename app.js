@@ -1,7 +1,10 @@
-var config = require("./config");
-var express = require('express');
-var fs = require('fs');
-var encryption = require('./lib/encryption');
+var config = require("./config"),
+	express = require('express'),
+	fs = require('fs'),
+	encryption = require('./lib/encryption'),
+	db = require('./lib/db');
+
+
 
 var app = express.createServer(express.logger(), express.bodyParser());
 

@@ -1,15 +1,15 @@
 {
-  "author": "tedsuo, Hainish",
+  "author": "tedsuo, Hainish, youngb",
   "name": "raaraa",
   "description": "party party",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/tedsuo/raaraa.git"
   },
   "main": "app.js",
   "scripts": {
-    "test": "test.js"
+    "test": "node test/raaraa.test.js"
   },
   "engines": {
     "node": "~v0.4.6"

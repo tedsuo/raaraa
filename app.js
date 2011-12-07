@@ -1,13 +1,26 @@
-var config = require("./config"),
-	express = require('express'),
-	fs = require('fs'),
-	encryption = require('./lib/encryption'),
-	db = require('./lib/db');
+var
+    config = require("./config"),
+    express = require('express'),
+    mongo = require('mongodb'),
+    fs = require('fs'),
+    encryption = require('./lib/encryption'),
+    raaraa = require('./lib/RaaRaa');
 
+console.log('RaaRaa v'+raaraa.version);
 
+var server = express.createServer();
 
-var app = express.createServer(express.logger(), express.bodyParser());
+var db = new mongo.Db(config.db_name,
+		      new mongo.Server(config.db_host, config.db_port, {}),
+		      {});
 
+var rr = new raaraa.RaaRaa(db, server);
+
+server.listen(9002);
+
+console.log('RaaRaa listening on port 9002');
+
+/*
 app.get('/', function(req, res){
   res.render('index.jade');
 });
@@ -67,7 +80,5 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({secret: config.session_secret}));
 });
+*/
 
-app.listen(9002);
-
-console.log('RaaRaa listening on port 9002');

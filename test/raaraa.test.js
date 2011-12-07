@@ -11,7 +11,7 @@ var db = new mongo.Db('raaraa_test',
                       {});
 var server = express.createServer(express.logger(), express.bodyParser());
 
-var raaApp;
+var raaApp = new raaraa.RaaRaa(db, server);
 module.exports = {
   "test .version": function(test) {
     test.expect(1);
@@ -21,7 +21,6 @@ module.exports = {
   
   "test new RaaRaa": function(test) {
     test.expect(1);
-    raaApp = new raaraa.RaaRaa(db, server, function() {});
     test.ok(raaApp, "RaaRaa app object not instantiated");
     test.done();
   },
@@ -29,6 +28,18 @@ module.exports = {
   "test models loaded": function(test) {
     test.expect(1);
     test.ok(raaApp.models && Object.keys(raaApp.models).length > 0, "Models not loaded");
+    test.done();
+  },
+  
+  "test controllers loaded": function(test) {
+    test.expect(1);
+    test.ok(raaApp.controllers && Object.keys(raaApp.controllers).length > 0, "Models not loaded");
+    test.done();
+  },
+  
+  "test views loaded": function(test) {
+    test.expect(1);
+    test.ok(raaApp.views && Object.keys(raaApp.views).length > 0, "Models not loaded");
     test.done();
   },
 };

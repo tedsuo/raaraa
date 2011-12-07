@@ -19,5 +19,7 @@
     "express" : ">=2.3.12",
     "jade" : ">=0.12.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodeunit" : ">=0.6.4",
+  }
 }

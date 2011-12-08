@@ -1,31 +1,28 @@
 var
-  config = require("../config"),
-  fs = require("fs")
-  raaraa = require("../lib/raaraa"),
-  mongo = require("mongodb"),
-  express = require("express");
+    raaraa = require("../lib/raaraa"),
+    test_utils = require("./lib/utils");
 
 // set up test database
-var db = new mongo.Db('raaraa_test',
-                      new mongo.Server(config.db_host, config.db_port, {}),
-                      {});
-var server = express.createServer(express.logger(), express.bodyParser());
+test_utils.createDBConnectUrl("raaraa_test");
 
-var rr = new raaraa.RaaRaa(db, server);
+var models = require("../lib/models");
+
+var rr = new raaraa.RaaRaa(models);
 
 module.exports = {
-    "test model doesn't exist": function(test) {
-	test.expect(1);
-	test.throws(function() { var badModel = rr.getModel("XXX"); });
-	test.done();
-    },
-
-    "test fetch collection class": function(test) {
+    "test fetch model": function(test) {
 	test.expect(1);
 	debugger;
-	var userModel = rr.getModel("User");
+	var userModel = rr.models.getModel("User");
 	test.ok(userModel, "No collection class returned");
 	test.done();
     },
+
+    "test model doesn't exist": function(test) {
+	test.expect(1);
+	test.throws(function() { var badModel = rr.models.getModel("XXX"); });
+	test.done();
+    },
+
 };
     

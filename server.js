@@ -1,34 +1,39 @@
-var
-    config = require("./config"),
+process.env.MODE = process.env.MODE || 'development';
+
+var config = require("./config")[process.env.MODE],
     express = require('express'),
-    raaraa = require('./lib/RaaRaa');
+    rr = require('./lib/RaaRaa');
 
-console.log('RaaRaa v'+raaraa.version);
-
+// RaaRaa http server
 var app = express.createServer();
+console.log('RaaRaa v'+rr.version+': HTTP SERVER');
 
-// set up ENV with the DB connection variables
-process.env.MONGO_CONNECT = process.env.MONGO_CONNECT
-    || "mongodb://"+config.db_host+":"+config.db_port+"/"+config.db_name;
+// static file server
+app.use(express.static(__dirname + "/client"));
 
-var models = require('./lib/models');
-    controllers = require('./lib/controllers');
+// middleware stacks
+var standard_stack = [
+  express.logger(),
+  express.bodyParser()
+];
 
-var rr = new raaraa.RaaRaa(models);
+var streaming_stack = [
+  express.logger()
+];
 
-app.configure(express.logger(),
-	      express.bodyParser(),
-              
-              // Attach our RaaRaa object to each request
-              function(req, res, next) {
-	          req.rr = rr;
-	          next();
-              },
+// ROUTES
+app.get('/', standard_stack, function(req,res){
+  res.render("index.jade", { title: 'RaaRaa -- Party People' });
+});
 
-	      express.static(__dirname + "/public"));
+app.get('/stream', standard_stack, function(req,res){
+  res.render("stream.jade", { title: 'RaaRaa -- My Stream' });
+});
 
+app.post('/img', streaming_stack, function(req,res){
+  // upload a photo
+});
 
+// once we're ready, start taking connections
 app.listen(9002);
-
-console.log('RaaRaa listening on port 9002');
-
+console.log('RaaRaa http service listening on port 9002');

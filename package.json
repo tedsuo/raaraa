@@ -22,7 +22,8 @@
     "util"    : ">=0.4.9",
     "events"  : ">=0.4.0",
     "async"   : ">=0.1.15",
-    "underscore" : ">=1.2.3"
+    "underscore" : ">=1.2.3",
+    "socket.io": ">=0.8.7"
   },
   "devDependencies": {
     "nodeunit" : ">=0.6.4"

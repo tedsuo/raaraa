@@ -1,6 +1,6 @@
-process.env.MODE = process.env.MODE || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var config = require("../config")[process.env.MODE],
+var config = require("../config")[process.env.NODE_ENV],
     models = require('./models'),
     mongoose = require('mongoose'),
     EventEmitter = require('events').EventEmitter;

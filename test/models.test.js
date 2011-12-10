@@ -1,4 +1,4 @@
-var rr = require("../lib/raaraa");
+var rr = require("../raaraa");
 
 module.exports = {
   "models loaded": function(test) {

@@ -1,6 +1,6 @@
-process.env.MODE = 'test';
+process.env.NODE_ENV = 'test';
 
-var rr = require("../lib/raaraa");
+var rr = require("../raaraa");
 
 module.exports = {
   ".version": function(test) {

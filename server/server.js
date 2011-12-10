@@ -3,7 +3,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var config = require("../config")[process.env.NODE_ENV],
     express = require('express'),
     socketIO = require('socket.io'),
-    routes = require('./routes')
+    routes = require('./routes'),
     rr = require('../raaraa');
 
 // RaaRaa http server
@@ -11,9 +11,13 @@ var app = express.createServer();
 console.log('RaaRaa v'+rr.version+': HTTP SERVER');
 
 // setup static http file server
-app.use(express.static(__dirname + "/../client"));
+app.use(express.static(__dirname + "/client"));
 
-// setup http routes
+// setup views
+app.set('views', __dirname + '/client/templates');
+app.set('view engine', 'jade');
+
+// setup routes
 routes.setup(app);
 app.use(app.router);
 

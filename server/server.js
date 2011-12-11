@@ -6,9 +6,10 @@ var config = require("../config")[process.env.NODE_ENV],
     routes = require('./routes'),
     rr = require('../raaraa');
 
-// RaaRaa http server
+// RaaRaa http and socket.io server
 var app = express.createServer();
-console.log('RaaRaa v'+rr.version+': HTTP SERVER');
+var io = socketIO.listen(app);
+console.log('RaaRaa v'+rr.version+': http and socket.io server');
 
 // setup static http file server
 app.use(express.static(__dirname + "/client"));
@@ -20,9 +21,6 @@ app.set('view engine', 'jade');
 // setup routes
 routes.setup(app);
 app.use(app.router);
-
-// RaaRaa socket.io server
-var io = socketIO.listen(app);
 
 // once we're ready, start taking connections
 app.listen(9002);

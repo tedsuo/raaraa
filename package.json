@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "mongodb" : ">=0.9.6-1",
-    "mongoose" : ">=2.4.1",
+    "mongoq" : ">=0.2.1",
     "express" : ">=2.3.12",
     "jade"    : ">=0.12.4",
     "util"    : ">=0.4.9",

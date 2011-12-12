@@ -5,23 +5,28 @@ var config = require("../config")[process.env.NODE_ENV],
     mongoose = require('mongoose'),
     EventEmitter = require('events').EventEmitter;
 
-var VERSION = '0.0.1';
-
-// setup RaaRaa mongodb connection
-process.env.MONGO_CONNECT = process.env.MONGO_CONNECT ||
-    "mongodb://"+config.db_host+":"+config.db_port+"/"+config.db_name;
-
-var db = mongoose.connect(process.env.MONGO_CONNECT).connection;
+// read library version from package file
+var VERSION = JSON.parse(require("fs").readFileSync(require("path").join(__dirname, '..', 'package.json'), 'utf8'))['version'];;
 
 // RaaRaa client
 var RaaRaa = function(){
-  this.version = VERSION;
-  this.models = models;
+    EventEmitter.call(this);
+    this.version = VERSION;
+    this.models = models;
+};
+
+RaaRaa.prototype = {
+    createUser: function(doc, callback) {
+        this.models.user.createUser(doc, callback);
+    },
+
+    findUser: function(query, callback) {
+        this.models.user.findUser(query, callback);
+    },
 };
 
 // inherit from EventEmitter
 RaaRaa.prototype.__proto__ = EventEmitter.prototype;
-
 
 // RaaRaa client is a singleton
 module.exports = new RaaRaa();

@@ -32,11 +32,7 @@ module.exports = {
 
                 // both variables must reference the exact same object
                 test.deepEqual(created_user, found_user);
-                console.log("done with DB stuff");
-                process.nextTick(function() {
-                    console.log("ending test");
-                    test.done();
-                });
+                test.done();
             });
         });
     },

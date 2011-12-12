@@ -2,6 +2,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var config = require("../config")[process.env.NODE_ENV],
     models = require('./models'),
+    db = require('./db'),
     EventEmitter = require('events').EventEmitter;
 
 // read library version from package file
@@ -12,6 +13,7 @@ var RaaRaa = function(){
     EventEmitter.call(this);
     this.version = VERSION;
     this.models = models;
+    this.db = db;
 };
 
 RaaRaa.prototype = {

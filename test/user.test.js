@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var rr = require("../raaraa"),
-db = require("../raaraa/db");
+    db = rr.db;
 
 module.exports = {
     setUp: function(next) {

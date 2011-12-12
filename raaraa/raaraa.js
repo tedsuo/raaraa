@@ -5,7 +5,7 @@ var config = require("../config")[process.env.NODE_ENV],
     EventEmitter = require('events').EventEmitter;
 
 // read library version from package file
-var VERSION = JSON.parse(require("fs").readFileSync(require("path").join(__dirname, '..', 'package.json'), 'utf8'))['version'];;
+ var VERSION = require('../package.json')['version'];
 
 // RaaRaa client
 var RaaRaa = function(){

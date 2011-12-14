@@ -19,8 +19,8 @@ var RaaRaa = function(){
 RaaRaa.prototype = {
     createUser: function(doc, callback) {
         this.models.user.create(doc, {
-            success: function(model, response) {
-                callback(null, response);
+            success: function(model, user) {
+                callback(null, user);
             },
             error: function(model, err) {
                 callback(err, null);
@@ -31,8 +31,9 @@ RaaRaa.prototype = {
     findUser: function(query, callback) {
         var m = new this.models.user.model(query);
         m.fetch({
-            success: function(model, response) {
-                callback(null, response);
+            queryParams: query,
+            success: function(model, users) {
+                callback(null, users[0]);
             },
             error: function(model, err) {
                 callback(err, null);

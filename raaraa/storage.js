@@ -37,8 +37,8 @@ _.extend(MongoStorage.prototype, {
             });
     },
 
-    findAll: function(cb) {
-        this.collection.find(this.params).toArray()
+    findAll: function(queryParams, cb) {
+        this.collection.find(queryParams || this.params).toArray()
             .done(function(items) {
                 _.each(items, _fixupItem);
                 cb(null, items);
@@ -101,7 +101,8 @@ Backbone.sync = function(method, model, options) {
 
     switch (method) {
     case "read":
-        model.id ? storage.find(model, cb) : storage.findAll(cb);
+        model.id ? storage.find(model, cb)
+            : storage.findAll(options.queryParams, cb);
         break;
 
     case "create":

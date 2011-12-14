@@ -20,10 +20,10 @@ RaaRaa.prototype = {
     createUser: function(doc, callback) {
         this.models.user.create(doc, {
             success: function(model, user) {
-                callback(null, user);
+                callback(null, model);
             },
             error: function(model, err) {
-                callback(err, null);
+                callback(err, model);
             }
         });
     },
@@ -33,10 +33,10 @@ RaaRaa.prototype = {
         m.fetch({
             queryParams: query,
             success: function(model, users) {
-                callback(null, users[0]);
+                callback(null, model);
             },
             error: function(model, err) {
-                callback(err, null);
+                callback(err, model);
             }
         });
     },

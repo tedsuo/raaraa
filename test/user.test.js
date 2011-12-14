@@ -37,7 +37,7 @@ module.exports = {
                 debugger;
 
                 // both variables must reference the exact same object
-                test.deepEqual(created_user, found_user);
+                test.deepEqual(created_user.toJSON(), found_user.toJSON());
                 test.done();
             });
         });

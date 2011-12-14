@@ -4,13 +4,14 @@ var Storage = {};
     _ = require("underscore");
 
 var Model = exports.Model = Backbone.Model.extend({
-
+    idAttribute: '_id',
+    parse: function() {
+        return this.storage.parse.apply(this, arguments);
+    },
 });
 
 var Collection = exports.Collection = Backbone.Collection.extend({
-    parse: function() {
-        this.storage.parse.apply(this, arguments);
-    },
+
 });
 
 
@@ -21,7 +22,6 @@ var MongoStorage = exports.MongoStorage = function(collectionName) {
 };
 
 var _fixupItem = function(item) {
-    item.id = item._id;
     return item;
 }
 
@@ -81,7 +81,11 @@ _.extend(MongoStorage.prototype, {
     },
 
     parse: function(response) {
-        return response;
+        if (response instanceof Array) {
+            return response[0];
+        } else {
+            return response;
+        }
     },
 });
 
@@ -92,6 +96,7 @@ Backbone.sync = function(method, model, options) {
     var storage = model.storage || model.collection.storage;
 
     var cb = function(err, response) {
+        debugger;
         if (err) {
             options.error(model, response, options);
         } else {

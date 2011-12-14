@@ -5,13 +5,17 @@ var rr = require("../raaraa"),
 
 module.exports = {
     setUp: function(next) {
-        db.collection("users").remove().done(function(){
-            next();
-        });
+        db.collection("users").remove()
+            .done(function(){
+                next();
+            })
+            .fail(function(err) {
+                throw new Error(err);
+            });
     },
     
     "create account with username/password": function(test) {
-        
+
         test.expect(5);
         
         // key for creating and retrieving the account
@@ -29,6 +33,8 @@ module.exports = {
             rr.findUser( USER_ID, function(err,found_user) {
                 test.ok(err === null, err);
                 test.ok(found_user, "no user found");
+
+                debugger;
 
                 // both variables must reference the exact same object
                 test.deepEqual(created_user, found_user);

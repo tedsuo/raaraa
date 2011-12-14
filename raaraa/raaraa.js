@@ -1,9 +1,9 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var config = require("../config")[process.env.NODE_ENV],
-    models = require('./models'),
+var models = require('./models'),
     db = require('./db'),
-    EventEmitter = require('events').EventEmitter;
+    EventEmitter = require('events').EventEmitter,
+    Backbone = require("backbone");
 
 // read library version from package file
  var VERSION = require('../package.json')['version'];
@@ -18,11 +18,26 @@ var RaaRaa = function(){
 
 RaaRaa.prototype = {
     createUser: function(doc, callback) {
-        this.models.user.createUser(doc, callback);
+        this.models.user.create(doc, {
+            success: function(model, response) {
+                callback(null, response);
+            },
+            error: function(model, err) {
+                callback(err, null);
+            }
+        });
     },
 
     findUser: function(query, callback) {
-        this.models.user.findUser(query, callback);
+        var m = new this.models.user.model(query);
+        m.fetch({
+            success: function(model, response) {
+                callback(null, response);
+            },
+            error: function(model, err) {
+                callback(err, null);
+            }
+        });
     },
 };
 

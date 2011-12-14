@@ -25,7 +25,7 @@
     "async"   : ">=0.1.15",
     "underscore" : ">=1.2.3",
     "socket.io": ">=0.8.7",
-    "backbone": ">=0.5.3",
+    "backbone": ">=0.5.3"
   },
   "devDependencies": {
     "nodeunit" : ">=0.6.4"

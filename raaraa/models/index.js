@@ -8,7 +8,7 @@ fs.readdirSync(__dirname).forEach(function(path) {
     if (path === 'index.js') {
         return;
     }
-    
+
     path = path.replace(/\.js$/, '');
     var model = require('./'+path);
     exports[path] = model;

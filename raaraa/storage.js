@@ -1,46 +1,167 @@
 var Storage = {};
     Backbone = require("backbone");
     db = require("./db");
+    EventEmitter = require('events').EventEmitter,
     _ = require("underscore");
 
 var Model = exports.Model = Backbone.Model.extend({
     idAttribute: '_id',
     parse: function() {
-        return this.storage.parse.apply(this, arguments);
+        return this.storage.parseModel.apply(this, arguments);
     },
 });
 
-var Collection = exports.Collection = Backbone.Collection.extend({
-
+var DataView = exports.DataView = Backbone.Collection.extend({
+    queryParams: {},
+    parse: function() {
+        return this.storage.parseDataView.apply(this, arguments);
+    }
 });
 
-
-var MongoStorage = exports.MongoStorage = function(collectionName) {
-    this.params = {};
-    this.collectionName = collectionName;
-    this.collection = db.collection(this.collectionName);
-};
-
-var _fixupItem = function(item) {
-    return item;
+/*
+ * A DataStorage subclass needs to provide these methods:
+ *
+ * query(queryParams, callback)
+ * insert(model, callback)
+ * update(model, callback)
+ * delete(model, callback)
+ * var attrsArray = parseDataView(response)
+ * var attrsObject = parseModel(response)
+ */
+var DataStorage = function DataStorage(options) {
+    EventEmitter.apply(this);
+    this.init(options);
 }
 
-_.extend(MongoStorage.prototype, {
-    find: function(model, cb) {
-        this.collection.findOne({ _id: model.id })
-            .done(function(item) {
-                _fixupItem(item);
-                cb(null, item);
-            })
-            .fail(function(err) {
-                cb(err, null);
-            });
+_.extend(DataStorage.prototype, {
+    init: function(options) {
+        this.model = options.model;
     },
 
-    findAll: function(queryParams, cb) {
-        this.collection.find(queryParams || this.params).toArray()
+    /* 
+     * options: { success: function(model),
+     *            error: function(error) }
+     */
+    create: function(attrs, options) {
+        var self = this;
+        var model = new this.model(attrs);
+
+        model.storage = this;
+
+        model.bind("error", function(model, err, options) {
+            self.emit("error", model, err, options);
+        });
+
+        model.save(null, {
+            success: function(model) {
+                options.success(model);
+            },
+            error: function(model, err) {
+                options.error(err);
+            }
+        });
+        return model;
+    },
+
+    /* 
+     * options: { success: function(dataview),
+     *            error: function(error) }
+     */
+    find: function(query, options) {
+        var self = this;
+        var dv = new DataView();
+
+        dv.storage = this;
+        dv.queryParams = query;
+
+        dv.bind("error", function(model, err, options) {
+            self.emit("error", model, err, options);
+        });
+
+        dv.fetch({
+            success: function(dv) {
+                options.success(dv);
+            },
+            error: function(dv, error) {
+                options.error(error);
+            }
+        });
+        return dv;
+    },
+
+    /* 
+     * options: { success: function(model),
+     *            error: function(error) }
+     */
+    findOne: function(query, options) {
+        var self = this;
+        var dv = new DataView();
+
+        dv.storage = this;
+        dv.queryParams = query;
+
+        dv.bind("error", function(model, err, options) {
+            self.emit("error", model, err, options);
+        });
+
+        dv.fetch({
+            success: function(dv) {
+                var model = dv.first();
+                options.success(model);
+            },
+            error: function(dv, error) {
+                options.error(error);
+            }
+        });
+    },
+
+    sync: function(method, model, options) {
+        // model here is either a Model or DataView
+        var cb = function(err, response) {
+            if (err) {
+                options.error(model, response, options);
+            } else {
+                options.success(response);
+            }
+        };
+
+        switch (method) {
+        case "read":
+            var query = model.id ? model.toJSON() : model.queryParam;
+            this.query(query, cb);
+            break;
+
+        case "create":
+            this.insert(model, cb);
+            break;
+
+        case "update":
+            this.update(model, cb);
+            break;
+
+        case "delete":
+            this.delete(model, cb);
+            break;
+        }
+    }
+});
+
+DataStorage.prototype.__proto__ = EventEmitter.prototype;
+
+var MongoStorage = exports.MongoStorage = function MongoStorage(options) {
+    DataStorage.apply(this, arguments);
+};
+
+_.extend(MongoStorage.prototype, DataStorage.prototype, {
+    init: function(options) {
+        DataStorage.prototype.init.call(this, options);
+        this.collectionName = options.collectionName;
+        this.collection = db.collection(this.collectionName);
+    },
+
+    query: function(queryParams, cb) {
+        this.collection.find(queryParams).toArray()
             .done(function(items) {
-                _.each(items, _fixupItem);
                 cb(null, items);
             })
             .fail(function(err) {
@@ -48,10 +169,10 @@ _.extend(MongoStorage.prototype, {
             });
     },
 
-    create: function(model, cb) {
+    insert: function(model, cb) {
         this.collection.insert(model.toJSON())
-            .done(function(items) {
-                cb(null, _fixupItem(items[0]));
+            .done(function(item) {
+                cb(null, item);
             })
             .fail(function(err) {
                 cb(err, null);
@@ -80,48 +201,29 @@ _.extend(MongoStorage.prototype, {
             });
     },
 
-    parse: function(response) {
+    parseModel: function(response) {
         if (response instanceof Array) {
             return response[0];
         } else {
             return response;
         }
     },
+
+    parseDataView: function(response) {
+        if (response instanceof Array) {
+            return response;
+        } else {
+            return [response];
+        }
+    },
 });
 
-
+MongoStorage.prototype.__proto__ = DataStorage.prototype;
 
 
 Backbone.sync = function(method, model, options) {
     var storage = model.storage || model.collection.storage;
-
-    var cb = function(err, response) {
-        debugger;
-        if (err) {
-            options.error(model, response, options);
-        } else {
-            options.success(response);
-        }
-    };
-
-    switch (method) {
-    case "read":
-        model.id ? storage.find(model, cb)
-            : storage.findAll(options.queryParams, cb);
-        break;
-
-    case "create":
-        storage.create(model, cb);
-        break;
-
-    case "update":
-        storage.update(model, cb);
-        break;
-
-    case "delete":
-        storage.delete(model, cb);
-        break;
-    }
+    storage.sync.apply(storage, arguments);
 }
 
 

@@ -1,5 +1,4 @@
 var Storage = require("../storage"),
-    Collection = require("../raaraa").Collection,
     Model = require("../raaraa").Model,
     server = require("../is-server");
 
@@ -10,26 +9,19 @@ var Storage = require("../storage"),
 
 var storage;
 
-if (server) {
-    storage = new Storage.MongoStorage("users");
-} else {
-    storage = new Storage.ClientStorage();
-}
-
 var UserModel = Storage.Model.extend({
-    storage: storage,
     initialize: function() {
         
     },
 });
 
-var UserCollection = Storage.Collection.extend({
-    model: UserModel,
-    storage: storage,
-    initialize: function() {
-        
-    }
-});
+if (server) {
+    storage = new Storage.MongoStorage({ collectionName: "users",
+                                         model: UserModel });
+} else {
+    storage = new Storage.ClientStorage({ model: UserModel });
+}
 
-module.exports = new UserCollection();
+
+module.exports = storage;
 

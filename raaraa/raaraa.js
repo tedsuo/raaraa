@@ -9,7 +9,7 @@ var models = require('./models'),
  var VERSION = require('../package.json')['version'];
 
 // RaaRaa client
-var RaaRaa = function(){
+var RaaRaa = function RaaRaa(){
     EventEmitter.call(this);
     this.version = VERSION;
     this.models = models;
@@ -17,29 +17,7 @@ var RaaRaa = function(){
 };
 
 RaaRaa.prototype = {
-    createUser: function(doc, callback) {
-        this.models.user.create(doc, {
-            success: function(model, user) {
-                callback(null, model);
-            },
-            error: function(model, err) {
-                callback(err, model);
-            }
-        });
-    },
 
-    findUser: function(query, callback) {
-        var m = new this.models.user.model(query);
-        m.fetch({
-            queryParams: query,
-            success: function(model, users) {
-                callback(null, model);
-            },
-            error: function(model, err) {
-                callback(err, model);
-            }
-        });
-    },
 };
 
 // inherit from EventEmitter

@@ -16,7 +16,7 @@ module.exports = {
     
     "create account with username/password": function(test) {
 
-        test.expect(5);
+        test.expect(3);
         
         // key for creating and retrieving the account
         var USER_ID = {
@@ -24,23 +24,21 @@ module.exports = {
             password: 'password'
         };
 
-        // create a new user with username and password combo
-        rr.createUser( USER_ID, function(err,created_user){
-            test.ok(err === null, err);
+        rr.models.user.on("error", function(model, err) {
+            test.ifError(err);
+        });
+
+        rr.models.user.create(USER_ID, { success: function(created_user) {
             test.ok(created_user, "no user created");
 
-            // try to find the user with the same combo
-            rr.findUser( USER_ID, function(err,found_user) {
-                test.ok(err === null, err);
+            rr.models.user.findOne(USER_ID, { success: function(found_user) {
                 test.ok(found_user, "no user found");
-
-                debugger;
 
                 // both variables must reference the exact same object
                 test.deepEqual(created_user.toJSON(), found_user.toJSON());
                 test.done();
-            });
-        });
+            } });
+        } });
     },
 
     tearDown: function(next) {

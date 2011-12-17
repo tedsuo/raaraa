@@ -17,7 +17,8 @@ var UserModel = Storage.Model.extend({
 
 if (server) {
     storage = new Storage.MongoStorage({ collectionName: "users",
-                                         model: UserModel });
+                                         model: UserModel,
+                                       });
 } else {
     storage = new Storage.ClientStorage({ model: UserModel });
 }

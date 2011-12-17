@@ -17,7 +17,16 @@ var RaaRaa = function RaaRaa(){
 };
 
 RaaRaa.prototype = {
-
+    dbInitialize: function(cb) {
+        db.ensureIndex("users", { username: 1 }, { unique: true },
+                       function(err) {
+                           if (err) {
+                               throw new Error(err);
+                           } else {
+                               cb();
+                           }
+                       });
+    }
 };
 
 // inherit from EventEmitter

@@ -54,9 +54,11 @@ _.extend(DataStorage.prototype, {
 
         model.save(null, {
             success: function(model) {
+                debugger;
                 options.success(model);
             },
             error: function(model, err) {
+                debugger;
                 options.error(err);
             }
         });
@@ -118,6 +120,7 @@ _.extend(DataStorage.prototype, {
     sync: function(method, model, options) {
         // model here is either a Model or DataView
         var cb = function(err, response) {
+            debugger;
             if (err) {
                 options.error(model, response, options);
             } else {
@@ -127,11 +130,12 @@ _.extend(DataStorage.prototype, {
 
         switch (method) {
         case "read":
-            var query = model.id ? model.toJSON() : model.queryParam;
+            var query = model.id ? model.toJSON() : model.queryParams;
             this.query(query, cb);
             break;
 
         case "create":
+            debugger;
             this.insert(model, cb);
             break;
 
@@ -170,11 +174,14 @@ _.extend(MongoStorage.prototype, DataStorage.prototype, {
     },
 
     insert: function(model, cb) {
+        debugger;
         this.collection.insert(model.toJSON())
             .done(function(item) {
+                debugger;
                 cb(null, item);
             })
             .fail(function(err) {
+                debugger;
                 cb(err, null);
             });
     },

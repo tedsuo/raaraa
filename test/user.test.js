@@ -74,7 +74,7 @@ module.exports = {
                         test.ok(!created_user, "duplicate user created"); // should fail
                         test.done();
                     },
-                    error: function(model, err) {
+                    error: function(err) {
                         debugger;
                         test.ok(err, "no error");
                         

@@ -54,11 +54,9 @@ _.extend(DataStorage.prototype, {
 
         model.save(null, {
             success: function(model) {
-                debugger;
                 options.success(model);
             },
             error: function(model, err) {
-                debugger;
                 options.error(err);
             }
         });
@@ -120,7 +118,6 @@ _.extend(DataStorage.prototype, {
     sync: function(method, model, options) {
         // model here is either a Model or DataView
         var cb = function(err, response) {
-            debugger;
             if (err) {
                 options.error(model, response, options);
             } else {
@@ -135,7 +132,6 @@ _.extend(DataStorage.prototype, {
             break;
 
         case "create":
-            debugger;
             this.insert(model, cb);
             break;
 
@@ -174,22 +170,19 @@ _.extend(MongoStorage.prototype, DataStorage.prototype, {
     },
 
     insert: function(model, cb) {
-        debugger;
-        this.collection.insert(model.toJSON())
+        this.collection.insert(model.toJSON(), { safe: true })
             .done(function(item) {
-                debugger;
                 cb(null, item);
             })
             .fail(function(err) {
-                debugger;
                 cb(err, null);
             });
     },
 
     update: function(model, cb) {
-        this.collection.update({ _id: model.id },
-                               model.toJSON(),
-                               { safe: true })
+        this.collection.findAndModify({ _id: model.id }, {},
+                                      model.toJSON(),
+                                      { new: true })
             .done(function() {
                 cb(null, model.toJSON());
             })

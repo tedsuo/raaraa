@@ -7,7 +7,8 @@ var Storage = {};
 var Model = exports.Model = Backbone.Model.extend({
     idAttribute: '_id',
     parse: function() {
-        return this.storage.parseModel.apply(this, arguments);
+        var storage = (this.storage || this.collection.storage);
+        return storage.parseModel.apply(this, arguments);
     },
 });
 
@@ -57,7 +58,7 @@ _.extend(DataStorage.prototype, {
                 options.success(model);
             },
             error: function(model, err) {
-                options.error(err);
+                options.error(model, err);
             }
         });
         return model;
@@ -69,7 +70,8 @@ _.extend(DataStorage.prototype, {
      */
     find: function(query, options) {
         var self = this;
-        var dv = new DataView();
+        var dvType = DataView.extend({ model: this.model });
+        var dv = new dvType();
 
         dv.storage = this;
         dv.queryParams = query;
@@ -83,7 +85,7 @@ _.extend(DataStorage.prototype, {
                 options.success(dv);
             },
             error: function(dv, error) {
-                options.error(error);
+                options.error(dv, error);
             }
         });
         return dv;
@@ -95,7 +97,8 @@ _.extend(DataStorage.prototype, {
      */
     findOne: function(query, options) {
         var self = this;
-        var dv = new DataView();
+        var dvType = DataView.extend({ model: this.model });
+        var dv = new dvType();
 
         dv.storage = this;
         dv.queryParams = query;
@@ -110,7 +113,7 @@ _.extend(DataStorage.prototype, {
                 options.success(model);
             },
             error: function(dv, error) {
-                options.error(error);
+                options.error(dv, error);
             }
         });
     },
@@ -119,7 +122,7 @@ _.extend(DataStorage.prototype, {
         // model here is either a Model or DataView
         var cb = function(err, response) {
             if (err) {
-                options.error(model, response, options);
+                options.error(model, err, options);
             } else {
                 options.success(response);
             }
@@ -180,9 +183,9 @@ _.extend(MongoStorage.prototype, DataStorage.prototype, {
     },
 
     update: function(model, cb) {
-        this.collection.findAndModify({ _id: model.id }, {},
-                                      model.toJSON(),
-                                      { new: true })
+        this.collection.update({ _id: model.id },
+                               model.toJSON(),
+                               { safe: true })
             .done(function() {
                 cb(null, model.toJSON());
             })

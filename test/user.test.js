@@ -46,17 +46,20 @@ module.exports = {
 
             test.expect(3);
             
-            rr.models.user.create(USER_ID, { success: function(created_user) {
-                test.ok(created_user, "no user created");
+            rr.models.user.create(USER_ID, {
+                success: function(created_user) {
+                    test.ok(created_user, "no user created");
 
-                rr.models.user.findOne(USER_ID, { success: function(found_user) {
-                    test.ok(found_user, "no user found");
+                    rr.models.user.findOne(USER_ID, {
+                        success: function(found_user) {
+                            test.ok(found_user, "no user found");
 
-                    // both variables must reference the exact same object
-                    test.deepEqual(created_user.toJSON(), found_user.toJSON());
-                    test.done();
+                            // both variables must reference the exact same object
+                            test.deepEqual(created_user.toJSON(),
+                                           found_user.toJSON());
+                            test.done();
+                        } });
                 } });
-            } });
         },
 
         "try to create duplicate account": function(test) {

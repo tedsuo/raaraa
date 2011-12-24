@@ -1,9 +1,9 @@
 process.env.NODE_ENV = 'test';
 
-var rr = require("../raaraa"),
+var db = require("../raaraa").db,
     server = require("../server"),
-    zombie = require('zombie'),
-    db = rr.db;
+    zombie = require('zombie');
+
 
 module.exports = {
   setUp: function(next) {
@@ -17,13 +17,15 @@ module.exports = {
       });
   },
 
-  tearDown: function(){
-    process.exit();
+  tearDown: function(next){
+    db.close();
+    server.close();
+    next();
   },
     
   "sign up from homepage": function(test) {
     test.expect(1);
-
+    
     // key for creating and retrieving the test account
     var USER_ID = {
         username: 'test_'+Date.now(),

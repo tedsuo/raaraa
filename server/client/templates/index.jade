@@ -4,17 +4,17 @@
   h3 Party Party
 #rara-container
   #login
-    form#signup
+    form#signup(method='post', action='/signup')
       h2 Sign Up
       .field
         label(for='name') User
-        input(name='name', type='text')
+        input#signup-user(name='name', type='text')
       .field
         label(for='pass') Pass
-        input(name='pass', type='text')
+        input#signup-pass(name='pass', type='text')
       .field
         label(for='verify') Twice
-        input(name='verify', type='text')
+        input#signup-verify(name='verify', type='text')
       .field
         input#signup-submit(name='submit', type='submit', value='Sign Up')
     #divider
@@ -22,9 +22,9 @@
       h2 Sign In
       .field
         label(for='name') User
-        input(name='name', type='text')
+        input#signin-user(name='name', type='text')
       .field
         label(for='pass') Pass
-        input(name='pass', type='text')
+        input#signin-pass(name='pass', type='text')
       .field
-        input#signup-submit(name='submit', type='submit', value='Sign In')
+        input#signin-submit(name='submit', type='submit', value='Sign In')

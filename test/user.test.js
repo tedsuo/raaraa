@@ -46,11 +46,11 @@ module.exports = {
 
             test.expect(5);
             
-            rr.models.user.create(USER_ID, {
+            rr.Users.create(USER_ID, {
                 success: function(created_user) {
                     test.ok(created_user, "no user created");
 
-                    rr.models.user.findOne(USER_ID, {
+                    rr.Users.findOne(USER_ID, {
                         success: function(found_user) {
                             test.ok(found_user, "no user found");
 
@@ -66,13 +66,13 @@ module.exports = {
 
         "try to create duplicate account": function(test) {
             test.expect(3);
-            rr.models.user.find({ username: USER_ID.username }, {
+            rr.Users.find({ username: USER_ID.username }, {
                 success: function(dataview) {
                     test.ok(dataview.length == 1, "test user does not exist");
                     test.equal(dataview.first().get("username"), USER_ID.username,
                                "find() returned wrong user");
 
-                    rr.models.user.create({ username: USER_ID.username }, {
+                    rr.Users.create({ username: USER_ID.username }, {
                         success: function(created_user) {
                             test.ok(!created_user, "duplicate user created"); // should fail
                             test.done();
@@ -89,7 +89,7 @@ module.exports = {
 
         "update user": function(test) {
             test.expect(2);
-            rr.models.user.find({ username: USER_ID.username }, {
+            rr.Users.find({ username: USER_ID.username }, {
                 success: function(dv) {
                     var user = dv.first();
                     test.ok(user, "user doesn't exist");
@@ -116,7 +116,7 @@ module.exports = {
 
         "delete user": function(test) {
             test.expect(2);
-            rr.models.user.find({ username: USER_ID.username }, {
+            rr.Users.find({ username: USER_ID.username }, {
                 success: function(dv) {
                     var user = dv.first();
                     test.ok(user, "User exists");
@@ -124,7 +124,7 @@ module.exports = {
                     user.destroy({
                         success: function() {
 
-                            rr.models.user.find({ username: USER_ID.username }, {
+                            rr.Users.find({ username: USER_ID.username }, {
                                 success: function(dv) {
                                     test.equal(dv.length, 0, "user still exists");
                                     test.done();

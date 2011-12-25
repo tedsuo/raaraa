@@ -1,28 +1,37 @@
-var Storage = require("../storage"),
-    Model = require("../raaraa").Model,
-    server = require("../is-server");
+(function(root) {
+  var Model, server = false, Storage;
+  
+  if (typeof window == 'undefined') {
+    server = true;
+  }
 
-/*    function hash(password) {
-      return crypto.createHash("sha1").update("t4stybab1es!"+password)
-      .digest('hex');
-      }*/
+  if (server) {
+    Model = require("../lib/modelbase").Model;
+    Storage = require("../storage");
+    RaaRaa = require("../raaraa");
+  } else {
+    Model = root.RaaRaa.Model;
+    RaaRaa = root.RaaRaa || (root.RaaRaa = {});
+  }
 
-var storage;
+  /*    function hash(password) {
+        return crypto.createHash("sha1").update("t4stybab1es!"+password)
+        .digest('hex');
+        }*/
 
-var UserModel = Storage.Model.extend({
+  var storage;
+  if (server) {
+    storage = new Storage.MongoStorage({ collectionName: "users" });
+  }
+
+  RaaRaa.Users = Model.extend({
+    storage: storage,
+    defaultQueryParams: { active: 1 },
     initialize: function() {
-        
+//      this.storage = storage;
     },
-});
+  });
 
-if (server) {
-    storage = new Storage.MongoStorage({ collectionName: "users",
-                                         model: UserModel,
-                                       });
-} else {
-    storage = new Storage.ClientStorage({ model: UserModel });
-}
+  
 
-
-module.exports = storage;
-
+})(this);

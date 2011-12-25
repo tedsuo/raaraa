@@ -1,7 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-var models = require('./models'),
-    db = require('./db'),
+var db = require('./db'),
     EventEmitter = require('events').EventEmitter,
     Backbone = require("backbone");
 
@@ -12,7 +11,6 @@ var models = require('./models'),
 var RaaRaa = function RaaRaa(){
     EventEmitter.call(this);
     this.version = VERSION;
-    this.models = models;
     this.db = db;
     this.lib_dirname = __dirname + '/lib';
 };
@@ -35,3 +33,5 @@ RaaRaa.prototype.__proto__ = EventEmitter.prototype;
 
 // RaaRaa client is a singleton
 module.exports = new RaaRaa();
+
+var models = require('./models');

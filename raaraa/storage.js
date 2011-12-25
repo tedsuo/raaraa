@@ -4,21 +4,6 @@ var Storage = {};
     EventEmitter = require('events').EventEmitter,
     _ = require("underscore");
 
-var Model = exports.Model = Backbone.Model.extend({
-    idAttribute: '_id',
-    parse: function() {
-        var storage = (this.storage || this.collection.storage);
-        return storage.parseModel.apply(this, arguments);
-    },
-});
-
-var DataView = exports.DataView = Backbone.Collection.extend({
-    queryParams: {},
-    parse: function() {
-        return this.storage.parseDataView.apply(this, arguments);
-    }
-});
-
 /*
  * A DataStorage subclass needs to provide these methods:
  *
@@ -36,86 +21,6 @@ var DataStorage = function DataStorage(options) {
 
 _.extend(DataStorage.prototype, {
     init: function(options) {
-        this.model = options.model;
-    },
-
-    /* 
-     * options: { success: function(model),
-     *            error: function(error) }
-     */
-    create: function(attrs, options) {
-        var self = this;
-        var model = new this.model(attrs);
-
-        model.storage = this;
-
-        model.bind("error", function(model, err, options) {
-            self.emit("error", model, err, options);
-        });
-
-        model.save(null, {
-            success: function(model) {
-                options.success(model);
-            },
-            error: function(model, err) {
-                options.error(model, err);
-            }
-        });
-        return model;
-    },
-
-    /* 
-     * options: { success: function(dataview),
-     *            error: function(error) }
-     */
-    find: function(query, options) {
-        var self = this;
-        var dvType = DataView.extend({ model: this.model });
-        var dv = new dvType();
-
-        dv.storage = this;
-        dv.queryParams = query;
-
-        dv.bind("error", function(model, err, options) {
-            self.emit("error", model, err, options);
-        });
-
-        dv.fetch({
-            success: function(dv) {
-                options.success(dv);
-            },
-            error: function(dv, error) {
-                options.error(dv, error);
-            }
-        });
-        return dv;
-    },
-
-    /* 
-     * options: { success: function(model),
-     *            error: function(error) }
-     */
-    findOne: function(query, options) {
-        var self = this;
-        var dvType = DataView.extend({ model: this.model });
-        var dv = new dvType();
-
-        dv.storage = this;
-        dv.queryParams = query;
-
-        dv.bind("error", function(model, err, options) {
-            self.emit("error", model, err, options);
-        });
-
-        dv.fetch({
-            success: function(dv) {
-                var model = dv.first();
-                options.success(model);
-            },
-            error: function(dv, error) {
-                options.error(dv, error);
-            }
-        });
     },
 
     sync: function(method, model, options) {
@@ -222,11 +127,4 @@ _.extend(MongoStorage.prototype, DataStorage.prototype, {
 });
 
 MongoStorage.prototype.__proto__ = DataStorage.prototype;
-
-
-Backbone.sync = function(method, model, options) {
-    var storage = model.storage || model.collection.storage;
-    storage.sync.apply(storage, arguments);
-}
-
 

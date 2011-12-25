@@ -14,6 +14,7 @@ var RaaRaa = function RaaRaa(){
     this.version = VERSION;
     this.models = models;
     this.db = db;
+    this.lib_dirname = __dirname + '/lib';
 };
 
 RaaRaa.prototype = {

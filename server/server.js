@@ -4,6 +4,7 @@ var config = require("../config")[process.env.NODE_ENV],
     express = require('express'),
     socketIO = require('socket.io'),
     routes = require('./routes'),
+    static_server = require('./static.js')
     rr = require('../raaraa');
 
 var HOST = process.env.HOST || 'localhost';
@@ -18,10 +19,11 @@ console.log('RaaRaa v'+rr.version+': http and socket.io server');
 module.exports = app;
 
 // setup static http file server
-app.use(express.static(__dirname + "/client"));
+static_server.setup(app);
+//app.use(express.static(__dirname + "/client"));
 
 // setup views
-app.set('views', __dirname + '/client/templates');
+app.set('views', __dirname + '/../templates');
 app.set('view engine', 'jade');
 
 // setup routes

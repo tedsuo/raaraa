@@ -7,7 +7,6 @@
   if (server) {
     _ = require("underscore");
     Backbone = require("backbone");
-    uuid = require("node-uuid");
     exports = root;
   } else {
     _ = root._;
@@ -28,19 +27,6 @@
     },
     export: function(data) {
 
-    },
-    register: function() {
-      var self = this;
-      if (server && !this.id) {
-        this.set({_id: uuid()});
-      }
-      if (this.id && exports.models[this.id])
-        exports.models[this.id] = this;
-
-      this.bind("change:id", function(model) {
-        exports.models[model.id] = self;
-      });
-      
     }
   }, {
     /* 

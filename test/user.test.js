@@ -108,7 +108,7 @@ module.exports = {
                     });
                 },
                 error: function(dv, err) {
-                    test.isError(err);
+                    test.ifError(err);
                     test.done();
                 }
             });

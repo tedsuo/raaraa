@@ -44,7 +44,7 @@ module.exports = {
 
         "create account with username/password": function(test) {
 
-            test.expect(3);
+            test.expect(5);
             
             rr.models.user.create(USER_ID, {
                 success: function(created_user) {
@@ -55,8 +55,10 @@ module.exports = {
                             test.ok(found_user, "no user found");
 
                             // both variables must reference the exact same object
-                            test.deepEqual(created_user.toJSON(),
-                                           found_user.toJSON());
+                            ['username', 'password', '_id'].forEach(function(key) {
+                                test.equal(found_user.toJSON()[key].toString(),
+                                           created_user.toJSON()[key].toString());
+                            });
                             test.done();
                         } });
                 } });

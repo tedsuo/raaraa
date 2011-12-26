@@ -45,7 +45,7 @@
       switch (method) {
       case "read":
         var query = model.id ? model.toJSON() : model.queryParams;
-        this.read(query, cb);
+        this.query(query, cb);
         break;
 
       case "create":

@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
-var db = require("../raaraa").db,
-    server = require("../server"),
+var db = require("../../raaraa").db,
+    server = require("../../server"),
     zombie = require('zombie');
 
 

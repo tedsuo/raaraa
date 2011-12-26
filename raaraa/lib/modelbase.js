@@ -34,7 +34,6 @@
      *            error: function(error) }
      */
     create: function(attrs, options) {
-      debugger;
       var self = this;
       var model = new this(attrs);
 
@@ -86,7 +85,6 @@
      *            error: function(error) }
      */
     findOne: function(query, options) {
-      debugger;
       return this.find(query, {
         success: function(dv) {
           var model = dv.first();
@@ -113,7 +111,6 @@
   });
 
   Backbone.sync = function(method, model, options) {
-    debugger;
     var storage = model.storage || model.model.storage;
     storage.sync.apply(storage, arguments);
   }

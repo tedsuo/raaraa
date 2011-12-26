@@ -1,62 +1,10 @@
-var Storage = {};
-    Backbone = require("backbone");
-    db = require("./db");
-    EventEmitter = require('events').EventEmitter,
-    _ = require("underscore");
-
-/*
- * A DataStorage subclass needs to provide these methods:
- *
- * query(queryParams, callback)
- * insert(model, callback)
- * update(model, callback)
- * delete(model, callback)
- * var attrsArray = parseDataView(response)
- * var attrsObject = parseModel(response)
- */
-var DataStorage = function DataStorage(options) {
-    EventEmitter.apply(this);
-    this.init(options);
-}
-
-_.extend(DataStorage.prototype, {
-    init: function(options) {
-    },
-
-    sync: function(method, model, options) {
-        // model here is either a Model or DataView
-        var cb = function(err, response) {
-            if (err) {
-                options.error(model, err, options);
-            } else {
-                options.success(response);
-            }
-        };
-
-        switch (method) {
-        case "read":
-            var query = model.id ? model.toJSON() : model.queryParams;
-            this.query(query, cb);
-            break;
-
-        case "create":
-            this.insert(model, cb);
-            break;
-
-        case "update":
-            this.update(model, cb);
-            break;
-
-        case "delete":
-            this.delete(model, cb);
-            break;
-        }
-    }
-});
-
-DataStorage.prototype.__proto__ = EventEmitter.prototype;
-
-var MongoStorage = exports.MongoStorage = function MongoStorage(options) {
+var DataStorage = require('./storage'),
+    _ = require("underscore"),
+    db = require("../db");
+    
+    console.log(DataStorage);
+    
+var MongoStorage = module.exports = function MongoStorage(options) {
     DataStorage.apply(this, arguments);
 };
 

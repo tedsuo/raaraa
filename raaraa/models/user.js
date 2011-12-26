@@ -7,7 +7,7 @@
 
   if (server) {
     Model = require("../lib/modelbase").Model;
-    Storage = require("../storage");
+    MongoStorage = require("../lib/mongo_storage");
     RaaRaa = require("../raaraa");
   } else {
     Model = root.RaaRaa.Model;
@@ -21,7 +21,7 @@
 
   var storage;
   if (server) {
-    storage = new Storage.MongoStorage({ collectionName: "users" });
+    storage = new MongoStorage({ collectionName: "users" });
   }
 
   RaaRaa.Users = Model.extend({

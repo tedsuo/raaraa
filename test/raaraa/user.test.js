@@ -9,7 +9,8 @@ var USER_ID = {
   password: 'password'
 };
 
-var numTestsRun = 0;
+var numTestsRun = 0,
+    totalTests = 0;
 
 function beforeAll(next) {
   if (numTestsRun == 0) {
@@ -19,8 +20,6 @@ function beforeAll(next) {
     next();
   }
 }
-
-var totalTests;
 
 function afterAll(next) {
   if (numTestsRun >= totalTests) {

@@ -10,7 +10,7 @@
   "main": "app.js",
   "scripts": {
     "install": "node install.js",
-    "test": "nodeunit test/*"
+    "test": "nodeunit test/*/"
   },
   "engines": {
     "node": "~v0.6.5"

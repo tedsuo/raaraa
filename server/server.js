@@ -30,6 +30,9 @@ app.set('view engine', 'jade');
 routes.setup(app);
 app.use(app.router);
 
+app.on("clientError", function(e) { console.log(e.message); });
+app.on("close", function() { console.log("RaaRaa http service shut down") });
+
 // once we're ready, start taking connections
 app.listen(PORT,HOST);
 app.host = HOST;

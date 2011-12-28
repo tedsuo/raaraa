@@ -10,7 +10,7 @@
   "main": "app.js",
   "scripts": {
     "install": "node install.js",
-    "test": "nodeunit test/*/"
+    "test": "nodeunit test/"
   },
   "engines": {
     "node": "~v0.6.5"
@@ -24,7 +24,6 @@
     "underscore": ">=1.2.3",
     "socket.io": ">=0.8.7",
     "backbone": ">=0.5.3",
-    "ejs": ">=0.6.1",
     "filed": ">=0.0.4"
   },
   "devDependencies": {

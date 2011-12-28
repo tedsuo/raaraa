@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-var rr = require("../../raaraa");
+var rr = require("../raaraa");
 var fs = require('fs');
 
 module.exports = {

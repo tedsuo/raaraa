@@ -1,62 +1,41 @@
 process.env.NODE_ENV = 'test';
 
-var rr = require("../../raaraa"),
-db = rr.db;
+var rr = require("../raaraa"),
+    db = rr.db,
+    testMaker = require("./lib/testmaker"),
+    userFixtures = require("./fixtures/users");
 
 // key for creating and retrieving the account
-var USER_ID = {
-  username: 'test_'+Date.now(),
-  password: 'password'
-};
+var USER = userFixtures.randomUser();
 
-var numTestsRun = 0,
-    totalTests = 0;
-
-function beforeAll(next) {
-  if (numTestsRun == 0) {
+module.exports = testMaker({
+  beforeAll: function(next) {
     db.collection("users").remove()
       .done(function() { rr.dbInitialize(next); });
-  } else {
-    next();
-  }
-}
+  },
 
-function afterAll(next) {
-  if (numTestsRun >= totalTests) {
+  afterAll: function(next) {
     db.close(next);
-  } else {
-    next();
-  }
-}
-
-module.exports = {
-  setUp: function(next) {
-    beforeAll(next);
   },
 
-  tearDown: function(next) {
-    numTestsRun++;
-    afterAll(next);
-  },
-
-  "user tests": {
+  "tests": {
 
     "create account with username/password": function(test) {
 
       test.expect(5);
       
-      rr.Users.create(USER_ID, {
+      rr.Users.create(USER, {
         success: function(created_user) {
           test.ok(created_user, "no user created");
 
-          rr.Users.findOne(USER_ID, {
+          rr.Users.findOne(USER, {
             success: function(found_user) {
               test.ok(found_user, "no user found");
 
               // both variables must reference the exact same object
               ['username', 'password', '_id'].forEach(function(key) {
                 test.equal(found_user.toJSON()[key].toString(),
-                       created_user.toJSON()[key].toString());
+                           created_user.toJSON()[key].toString());
               });
               test.done();
             } });
@@ -65,13 +44,13 @@ module.exports = {
 
     "try to create duplicate account": function(test) {
       test.expect(3);
-      rr.Users.find({ username: USER_ID.username }, {
+      rr.Users.find({ username: USER.username }, {
         success: function(dataview) {
           test.ok(dataview.length == 1, "test user does not exist");
-          test.equal(dataview.first().get("username"), USER_ID.username,
-                 "find() returned wrong user");
+          test.equal(dataview.first().get("username"), USER.username,
+                     "find() returned wrong user");
 
-          rr.Users.create({ username: USER_ID.username }, {
+          rr.Users.create({ username: USER.username }, {
             success: function(created_user) {
               test.ok(!created_user, "duplicate user created"); // should fail
               test.done();
@@ -88,7 +67,7 @@ module.exports = {
 
     "update user": function(test) {
       test.expect(2);
-      rr.Users.find({ username: USER_ID.username }, {
+      rr.Users.find({ username: USER.username }, {
         success: function(dv) {
           var user = dv.first();
           test.ok(user, "user doesn't exist");
@@ -97,7 +76,7 @@ module.exports = {
           user.save(null, {
             success: function(user) {
               test.equal(user.get("password"), "new",
-                     "user not updated");
+                         "user not updated");
               test.done();
             },
             error: function(model, err) {
@@ -115,7 +94,7 @@ module.exports = {
 
     "delete user": function(test) {
       test.expect(2);
-      rr.Users.find({ username: USER_ID.username }, {
+      rr.Users.find({ username: USER.username }, {
         success: function(dv) {
           var user = dv.first();
           test.ok(user, "User exists");
@@ -123,7 +102,7 @@ module.exports = {
           user.destroy({
             success: function() {
 
-              rr.Users.find({ username: USER_ID.username }, {
+              rr.Users.find({ username: USER.username }, {
                 success: function(dv) {
                   test.equal(dv.length, 0, "user still exists");
                   test.done();
@@ -147,6 +126,4 @@ module.exports = {
       });
     }
   }
-};
-
-totalTests = Object.keys(module.exports["user tests"]).length;
+});

@@ -11,7 +11,7 @@ var USER = userFixtures.randomUser();
 module.exports = testMaker({
   beforeAll: function(next) {
     db.collection("users").remove()
-      .done(function() { rr.dbInitialize(next); });
+      .done(function() { rr.initialize(next); });
   },
 
   afterAll: function(next) {

@@ -3,28 +3,35 @@
   h1 RaaRaa
   h3 Party Party
 #rara-container
-  #login
-    form#signup(method='post', action='/signup')
-      h2 Sign Up
-      .field
-        label(for='name') User
-        input#signup-user(name='name', type='text')
-      .field
-        label(for='pass') Pass
-        input#signup-pass(name='pass', type='text')
-      .field
-        label(for='verify') Twice
-        input#signup-verify(name='verify', type='text')
-      .field
-        input#signup-submit(name='submit', type='submit', value='Sign Up')
-    #divider
-    form#signin
-      h2 Sign In
-      .field
-        label(for='name') User
-        input#signin-user(name='name', type='text')
-      .field
-        label(for='pass') Pass
-        input#signin-pass(name='pass', type='text')
-      .field
-        input#signin-submit(name='submit', type='submit', value='Sign In')
+  if !user
+    #login
+      form#signup(method='post', action='/signup')
+        h2 Sign Up
+        .field
+          label(for='name') User
+          input#signup-user(name='name', type='text')
+        .field
+          label(for='pass') Pass
+          input#signup-pass(name='pass', type='text')
+        .field
+          label(for='verify') Again
+          input#signup-verify(name='verify', type='text')
+        .field
+          input#signup-submit(name='submit', type='submit', value='Sign Up')
+      #divider
+      form#signin
+        h2 Sign In
+        .field
+          label(for='name') User
+          input#signin-user(name='name', type='text')
+        .field
+          label(for='pass') Pass
+          input#signin-pass(name='pass', type='text')
+        .field
+          input#signin-submit(name='submit', type='submit', value='Sign In')
+  else
+    #accountOptions
+      p
+        | Welcome,
+        a(href='/users' + user.id)= user.username
+      a(href='/signout')Sign out

@@ -16,16 +16,21 @@ var RaaRaa = function RaaRaa(){
 };
 
 RaaRaa.prototype = {
-    dbInitialize: function(cb) {
-        db.ensureIndex("users", { username: 1 }, { unique: true },
-                       function(err) {
-                           if (err) {
-                               throw new Error(err);
-                           } else {
-                               cb();
-                           }
-                       });
-    }
+  initialize: function(cb) {
+    require("./models");
+    this.dbInitialize(cb);
+  },
+
+  dbInitialize: function(cb) {
+    db.ensureIndex("users", { username: 1 }, { unique: true },
+                   function(err) {
+                     if (err) {
+                       throw new Error(err);
+                     } else {
+                       cb();
+                     }
+                   });
+  },
 };
 
 // inherit from EventEmitter
@@ -34,4 +39,3 @@ RaaRaa.prototype.__proto__ = EventEmitter.prototype;
 // RaaRaa client is a singleton
 module.exports = new RaaRaa();
 
-var models = require('./models');

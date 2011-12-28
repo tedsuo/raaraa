@@ -31,11 +31,13 @@ module.exports = {
   },
 
   "models loaded": function(test) {
-    var expectedModels = ['Users'];
-    test.expect(expectedModels.length);
-    expectedModels.forEach(function(key) {
-      test.ok(rr[key], key+" model not loaded");
+    rr.initialize(function() {
+      var expectedModels = ['Users'];
+      test.expect(expectedModels.length);
+      expectedModels.forEach(function(key) {
+        test.ok(rr[key], key+" model not loaded");
+      });
+      test.done();
     });
-    test.done();
   }
 };

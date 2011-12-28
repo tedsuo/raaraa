@@ -1,6 +1,6 @@
 var _ = require("underscore");
 
-module.exports = function makeTest(options) {
+module.exports = function(options){
   var testsRun = 0, totalTests = Object.keys(options.tests).length;
 
   var beforeEach = function(next) {
@@ -28,7 +28,7 @@ module.exports = function makeTest(options) {
   var afterEach = function(next) {
     testsRun++;
 
-    if (options.afterAll && testsRun >= totalTests) {
+    if (options.afterAll && (testsRun >= totalTests)) {
 
       options.afterAll(function() {
         if (options.tearDown) {

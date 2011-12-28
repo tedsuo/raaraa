@@ -4,21 +4,34 @@ var stacks = require('./middleware'),
 // ROUTES
 exports.setup = function(app) {
   app.get('/', stacks.standard, function(req,res){
-    res.render("index.jade", { title: 'RaaRaa -- Party People',
-                               user: req.session.user });
+    if(!req.user){
+      res.render("login.jade", {
+        title: 'RaaRaa -- Party People', 
+        errors: req.flash('error') 
+      });
+      return;
+    }
+    res.render("index.jade", {
+      title: 'RaaRaa -- Party People',
+      user: req.user 
+    });
   });
 
   app.post("/signup", stacks.standard, function(req, res) {
-    rr.Users.signup({ username: req.body.username
-                      , password: req.body.password }
-                    , function(err, user) {
-                      if (err) {
-                        req.session.lastError = err;
-                      } else {
-                        req.session.user = user;
-                      }
-                      res.redirect("/");
-                    });
+    console.log(rr.Users.signup);
+    rr.Users.signup({ 
+      username: req.body.username,
+      password: req.body.password,
+      verify: req.body.verify
+    }, 
+    function(err, user) {
+      if (err) {
+        req.flash('error',err);
+      } else {
+        req.user = user;
+      }
+      res.redirect("/");
+    });
   });
 
   app.get('/stream', stacks.standard, function(req,res){

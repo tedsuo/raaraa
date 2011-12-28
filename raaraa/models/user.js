@@ -1,29 +1,18 @@
 (function(root) {
-  var Model, server = false, storage, hashPass;
-  
+  var Model, server = false, exports;
+
   if (typeof window == 'undefined') {
     server = true;
-  }
-
-  if (server) {
     Model = require("../lib/modelbase").Model;
-    MongoStorage = require("../lib/mongo_storage");
-    RaaRaa = require("../raaraa");
-    storage = new MongoStorage({ collectionName: "users" });
-    hashPass = require("./userServer").hashPass;
+    exports = module.exports;
   } else {
     Model = root.RaaRaa.Model;
-    RaaRaa = root.RaaRaa || (root.RaaRaa = {});
-    hashPass = function(d) { return d; };
+    exports = root.RaaRaa || (root.RaaRaa = {});
   }
 
-  RaaRaa.Users = Model.extend({
-    storage: storage,
+  var Users = Model.extend({
     defaultQueryParams: { active: 1 },
-    initialize: function() {
-
-    },
-
+  },{
     signup: function(userData, cb) {
       this.findOne({ username: userData.username }, {
         success: function(user) {
@@ -44,9 +33,10 @@
           });
         }
       });
-    }
+    },
+    hashPass: function(d) { return d; }
   });
 
-  
-
+  if(server) exports.Users = Users.extend(require("./userServer"));
+  else exports.Users = Users;
 })(this);

@@ -2,16 +2,17 @@ process.env.NODE_ENV = 'test';
 
 var rr = require("../raaraa"),
     db = rr.db,
-    testMaker = require("./lib/testmaker"),
+    makeTest = require("./lib/testmaker"),
     userFixtures = require("./fixtures/users");
 
 // key for creating and retrieving the account
 var USER = userFixtures.randomUser();
 
-module.exports = testMaker({
+module.exports = makeTest({
   beforeAll: function(next) {
-    db.collection("users").remove()
-      .done(function() { rr.initialize(next); });
+    db.collection("users")
+      .remove()
+      .done(next);
   },
 
   afterAll: function(next) {
@@ -38,8 +39,10 @@ module.exports = testMaker({
                            created_user.toJSON()[key].toString());
               });
               test.done();
-            } });
-        } });
+            } 
+          });
+        } 
+      });
     },
 
     "try to create duplicate account": function(test) {
@@ -57,7 +60,6 @@ module.exports = testMaker({
             },
             error: function(model, err) {
               test.ok(err, "no error");
-              
               test.done();
             }
           });

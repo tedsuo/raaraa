@@ -1,35 +1,49 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var db = require('./db'),
+    models = require("./models"),
     EventEmitter = require('events').EventEmitter,
+    _ = require('underscore'),
     Backbone = require("backbone");
 
+
 // read library version from package file
- var VERSION = require('../package.json')['version'];
+var VERSION = require('../package.json')['version'];
 
 // RaaRaa client
 var RaaRaa = function RaaRaa(){
-    EventEmitter.call(this);
-    this.version = VERSION;
-    this.db = db;
-    this.lib_dirname = __dirname + '/lib';
+  EventEmitter.call(this);
+  this.version = VERSION;
+  this.db = db;
+  this.lib_dirname = __dirname + '/lib';
+  this._initializeModels();
+  this._dbInitialize(function(err){
+    if(err){
+      console.error(err);
+      this.emit('error',err);
+      return;
+    }
+    this.emit('ready');
+  }.bind(this));
 };
 
 RaaRaa.prototype = {
-  initialize: function(cb) {
-    require("./models");
-    this.dbInitialize(cb);
+
+  _initializeModels: function(){
+    _.each(models,function(model,model_name){
+      this[model_name] = model;
+    }.bind(this))
   },
 
-  dbInitialize: function(cb) {
-    db.ensureIndex("users", { username: 1 }, { unique: true },
-                   function(err) {
-                     if (err) {
-                       throw new Error(err);
-                     } else {
-                       cb();
-                     }
-                   });
+  _dbInitialize: function(cb) {
+    db.ensureIndex(
+      "users", 
+      { username: 1 }, 
+      { unique: true },
+      function(err) {
+        cb(err);
+      }
+    );
   },
 };
 

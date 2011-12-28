@@ -7,6 +7,8 @@ module.exports = {
   
   standard: [
     express.logger(LOG_FORMAT),
+    express.cookieParser(),
+    express.session({secret: 'this is fake'}),
     express.bodyParser()
   ],
 

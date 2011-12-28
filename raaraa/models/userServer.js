@@ -1,7 +1,8 @@
-var crypto = require("crypto");
+var MongoStorage = require("../lib/mongo_storage");
 
 module.exports = {
-  hashPass: function(p) {
-    return p;
-  }
+
+  storage: new MongoStorage({ collectionName: "users" })
+
+
 }

@@ -23,7 +23,7 @@ exports.setup = function(app) {
     },
     {
       url: '/lib',
-      dir: __dirname+'/../lib/js/'
+      dir: __dirname+'/../lib/'
     },
     {
       url: '/raaraa',

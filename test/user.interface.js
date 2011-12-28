@@ -6,19 +6,17 @@ var db = require("../raaraa").db,
   userFixtures = require("./fixtures/users"),
   testMaker = require("./lib/testmaker");
 
-var USER = userFixtures.randomUser();
-
-var _browser = new zombie.Browser({
-  site: 'http://'+server.host+':'+server.port,
-  debug: true,
-});
-
-function getBrowser() {
-  return _browser;
+function createBrowser() {
+  return new zombie.Browser({
+    site: 'http://'+server.host+':'+server.port,
+    debug: true
+  });
 }
+
 
 module.exports = testMaker({
   beforeAll: function(next) {
+
     db.collection("users")
       .remove()
       .done(function(){
@@ -39,7 +37,7 @@ module.exports = testMaker({
     "hit homepage": function(test) {
       test.expect(1);
 
-      var browser = getBrowser();
+      var browser = createBrowser();
 
       browser.visit('/', function(e, browser) {
         test.ok(browser.success, "Failed to load homepage");
@@ -48,25 +46,32 @@ module.exports = testMaker({
     },
     
     "sign up from homepage": function(test) {
-      test.expect(2);
+      test.expect(3);
       
-      var browser = getBrowser();
+      var user = userFixtures.randomUser();
+      var browser = createBrowser();
+      browser.visit('/', function(e, browser) {
+        test.ok(browser.success, "Failed to load homepage");
+        browser
+          .fill('#signup-user',user.username)
+          .fill('#signup-pass',user.password)
+          .fill('#signup-verify',user.password)
+          .pressButton('#signup-submit', function(e, browser) {
 
-      browser
-        .fill('#signup-user',USER.username)
-        .fill('#signup-pass',USER.password)
-        .fill('#signup-verify',USER.password)
-        .pressButton('#signup-submit', function(e, browser) {
-          // Form submitted, new page loaded.
-          test.ok(browser.success, "Error code returned");
-          if (browser.error) {
-            test.ifError(browser.error);
-          } else {
-            test.ok(browser.html("#accountOptions"),
-                    "User account panel not loaded");
-          }
-          test.done();
-        });
+            // Form submitted, new page loaded.
+            test.ok(browser.success,
+                      browser.statusCode+" Error: "+browser.html());
+            if (browser.error) {
+              test.ifError(browser.error);
+            } else {
+              test.ok(!browser.html("#signup"),
+                        "We should not be seeing the login page");
+              test.ok(browser.html("#logout-btn"),
+                        "We should be seeing a logout button");
+            }
+            test.done();
+          });
+      });
     }
   }
 });

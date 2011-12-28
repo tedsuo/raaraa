@@ -1,37 +1,23 @@
-#rara-bg
-#logo-signup.logo
-  h1 RaaRaa
-  h3 Party Party
 #rara-container
-  if !user
-    #login
-      form#signup(method='post', action='/signup')
-        h2 Sign Up
-        .field
-          label(for='name') User
-          input#signup-user(name='name', type='text')
-        .field
-          label(for='pass') Pass
-          input#signup-pass(name='pass', type='text')
-        .field
-          label(for='verify') Again
-          input#signup-verify(name='verify', type='text')
-        .field
-          input#signup-submit(name='submit', type='submit', value='Sign Up')
-      #divider
-      form#signin
-        h2 Sign In
-        .field
-          label(for='name') User
-          input#signin-user(name='name', type='text')
-        .field
-          label(for='pass') Pass
-          input#signin-pass(name='pass', type='text')
-        .field
-          input#signin-submit(name='submit', type='submit', value='Sign In')
-  else
-    #accountOptions
-      p
-        | Welcome,
-        a(href='/users' + user.id)= user.username
-      a(href='/signout')Sign out
+  #header
+    #header-logo.logo
+      h1 RaaRaa
+      h3 Party Party
+    #header-account
+      img.small-profile-pic(src='/img/profile/example-3.jpg')
+      h3.name= user.username
+      a#logout-btn(href='#logout') Logout
+    a#invite-btn(href='#invite') Invite
+    #content-selector
+      input#show-photos(type='checkbox')
+      label(for='show-photos') Photos
+      input#show-shouts(type='checkbox')
+      label(for='show-shouts') Shouts
+      input#show-friends(type='checkbox')
+      label(for='show-friends') Friends
+    .clear
+    #canvas
+      #col-1
+      #col-2
+      #col-3
+    #footer

@@ -16,15 +16,16 @@ function createBrowser() {
 
 module.exports = testMaker({
   beforeAll: function(next) {
-
-    db.collection("users")
-      .remove()
-      .done(function(){
-        next();
-      })
-      .fail(function(err) {
-        throw new Error(err);
-      });
+    server.on("listening", function() {
+      db.collection("users")
+        .remove()
+        .done(function(){
+          next();
+        })
+        .fail(function(err) {
+          throw new Error(err);
+        });
+    });
   },
 
   afterAll: function(next) {

@@ -21,6 +21,12 @@
 
     signup: function(user_data, cb) {
       var self = this;
+
+      if (user_data.password != user_data.verify) {
+        cb(new Error("Passwords do not match"));
+        return;
+      }
+
       this.findOne({ username: user_data.username }, function(err, user) {
         if (err) { cb(err); return; };
 

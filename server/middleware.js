@@ -23,7 +23,7 @@ module.exports = function(app) {
     return function(req,res,next){
       if(!req.session.user_id) return next();
       rr.Users.findOne(
-        {_id: req.session.user_id},
+        {_id: req.session.user_id}, //#TODO: '_id' is Mongo-specific, should probably be pulled from somewhere
         function(err,user){
           //#TODO: handle this error
           if(err) app.handleError(err);

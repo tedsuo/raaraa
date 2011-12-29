@@ -35,6 +35,25 @@ exports.setup = function(app) {
     );
   });
 
+  app.post("/login", stacks.standard, function(req, res) {
+    rr.Users.login(
+      { username: req.body.username,
+        password: req.body.password }
+      , function(err, user) {
+        if (err) {
+          req.flash('error', err.toString());
+        } else {
+          req.session.user_id = user.id;
+        }
+        res.redirect("/");
+      });
+  });
+
+  app.get("/logout", stacks.standard, function(req, res) {
+    req.session.user_id = null;
+    res.redirect("/");
+  });
+
   app.get('/stream', stacks.standard, function(req,res){
     res.render("stream.jade", { title: 'RaaRaa -- My Stream' });
   });

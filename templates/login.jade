@@ -18,7 +18,7 @@
       .field
         input#signup-submit(name='submit', type='submit', value='Sign Up')
     #divider
-    form#signin
+    form#signin(method='post', action='/login')
       h2 Sign In
       .field
         label(for='username') User

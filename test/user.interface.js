@@ -110,7 +110,7 @@ module.exports = testMaker({
 
       signUp(sign_up_user, browser, function(e, browser) {
         // Form submitted, new page loaded.
-         test.ok(browser.success,
+        test.ok(browser.success,
                 browser.statusCode+" Error: "+browser.html());
 
         if (browser.error) {
@@ -130,23 +130,22 @@ module.exports = testMaker({
     "log out": function(test) {
       test.expect(3);
 
-      lastBrowser().clickLink("#logout-btn", function(e, browser) {
-        // #TODO: WTF!? why is browser location now 'http://localhost:9002/signup'?
-        console.log(browser.location.toString());
+      lastBrowser().visit('/', function(e, browser) {
+        browser.clickLink("#logout-btn", function(e, browser) {
+          test.ok(browser.success,
+                  browser.statusCode+" Error: "+browser.html());
 
-        test.ok(browser.success,
-                browser.statusCode+" Error: "+browser.html());
+          if(browser.error) {
+            test.ifError(browser.error);
+            return test.done();
+          }
 
-        if(browser.error) {
-          test.ifError(browser.error);
-          return test.done();
-        }
-
-        test.ok(browser.html("#signup"),
-                "We should be seeing the login page");
-        test.ok(!browser.html("#logout-btn"),
-                "We should not be seeing a logout button");
-        test.done();
+          test.ok(browser.html("#signup"),
+                  "We should be seeing the login page");
+          test.ok(!browser.html("#logout-btn"),
+                  "We should not be seeing a logout button");
+          test.done();
+        });
       });
     },
 

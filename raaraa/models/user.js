@@ -44,6 +44,15 @@
         });
       });
     },
+
+    login: function(user_data, cb) {
+      this.findOne(
+        { username: user_data.username,
+          password: this.hashPass(user_data.password) },
+        cb
+      );
+    },
+
     hashPass: function(d) { return d; }
   });
 

@@ -23,7 +23,7 @@ module.exports = function(app) {
     return function(req,res,next){
       if(!req.session.user_id) return next();
       rr.Users.findOne(
-        {user_id:req.session.user_id},
+        {_id: req.session.user_id},
         function(err,user){
           //#TODO: handle this error
           if(err) app.handleError(err);

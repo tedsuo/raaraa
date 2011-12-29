@@ -3,17 +3,34 @@ var express = require('express');
 var LOG_FORMAT = ':method :url :status :res[content-length] - :response-time ms'
 
 // middleware stacks
-module.exports = {
+module.exports = function(app) {
   
-  standard: [
-    express.logger(LOG_FORMAT),
-    express.cookieParser(),
-    express.session({secret: 'this is fake'}),
-    express.bodyParser()
-  ],
+  return {
+    standard: [
+      express.logger(LOG_FORMAT),
+      express.cookieParser(),
+      express.session({secret: 'this is fake'}),
+      getCurrentUser(),
+      express.bodyParser()
+    ],
 
-  streaming: [
-    express.logger(LOG_FORMAT)
-  ]
+    streaming: [
+      express.logger(LOG_FORMAT)
+    ]
+  };
 
+  function getCurrentUser() { 
+    return function(req,res,next){
+      if(!req.session.user_id) return next();
+      rr.Users.findOne(
+        {user_id:req.session.user_id},
+        function(err,user){
+          //#TODO: handle this error
+          if(err) app.handleError(err);
+          req.user = user;
+          next();
+        }
+      );
+    }
+  };
 };

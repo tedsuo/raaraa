@@ -11,27 +11,27 @@
   }
 
   var Users = Model.extend({
-    defaultQueryParams: { active: 1 },
   },{
-    signup: function(userData, cb) {
-      this.findOne({ username: userData.username }, {
-        success: function(user) {
-          cb("User already exists");
-        },
-        error: function() {
-          var newUserData;
-          newUserData.username = userData.username;
-          newUserData.password = hashPass(userData.password);
-          this.create(newUserData, {
-            success: function(user) {
-              user.set("password", '');
-              cb(null, user);
-            },
-            error: function(model, err) {
-              cb(err);
-            }
-          });
+    defaultQueryParams: { active: 1 },
+
+    signup: function(user_data, cb) {
+      var self = this;
+      this.findOne({ username: user_data.username }, function(err, user) {
+        debugger;
+        if (err) { cb(err); return; };
+
+        if (user) {
+          cb(new Error("User already exists"));
+          return;
         }
+        var new_user_data = {};
+        new_user_data.username = user_data.username;
+        new_user_data.password = Users.hashPass(user_data.password);
+        self.create(new_user_data, function(err, user) {
+          debugger;
+          if (err) { cb(err); return; }
+          cb(null, user);
+        });
       });
     },
     hashPass: function(d) { return d; }

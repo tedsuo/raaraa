@@ -1,8 +1,9 @@
-var stacks = require('./middleware'),
+var middleware = require('./middleware'),
     rr = require("../raaraa");
 
 // ROUTES
 exports.setup = function(app) {
+  var stacks = middleware(app);
   app.get('/', stacks.standard, function(req,res){
     if(!req.user){
       res.render("login.jade", {
@@ -26,7 +27,8 @@ exports.setup = function(app) {
     }, 
     function(err, user) {
       if (err) {
-        req.flash('error',err);
+        console.error(err);
+        req.flash('error',err.toString());
       } else {
         req.user = user;
       }

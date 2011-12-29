@@ -18,6 +18,7 @@ _.extend(MongoStorage.prototype, DataStorage.prototype, {
     query: function(queryParams, cb) {
         this.collection.find(queryParams).toArray()
             .done(function(items) {
+              debugger;
                 cb(null, items);
             })
             .fail(function(err) {

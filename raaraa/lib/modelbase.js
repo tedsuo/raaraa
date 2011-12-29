@@ -30,10 +30,8 @@
     }
   }, {
     /* 
-     * options: { success: function(model),
-     *            error: function(error) }
      */
-    create: function(attrs, options) {
+    create: function(attrs, callback) {
       var self = this;
       var model = new this(attrs);
 
@@ -41,60 +39,60 @@
         self.emit("error", model, err, options);
       });
 
-      model.save(null, {
-        success: function(model) {
-          options.success(model);
-        },
-        error: function(model, err) {
-          options.error(model, err);
-        }
-      });
+      model.save(null, callback);
 
       return model;
     },
 
     /* 
-     * options: { success: function(dataview),
-     *            error: function(error) }
      */
-    find: function(query, options) {
+    find: function(query, callback) {
       var self = this;
       var dvType = exports.DataView.extend({ model: this });
       var dv = new dvType();
 
       dv.storage = this.prototype.storage;
+      debugger;
       dv.queryParams = _.extend({}, this.defaultQueryParams || {}, query);
 
       dv.bind("error", function(model, err, options) {
         self.emit("error", model, err, options);
       });
 
-      dv.fetch({
-        success: function(dv) {
-          options.success(dv);
-        },
-        error: function(dv, error) {
-          options.error(dv, error);
-        }
-      });
+      dv.fetch(callback);
       return dv;
     },
 
     /* 
-     * options: { success: function(model),
-     *            error: function(error) }
+     * 
      */
-    findOne: function(query, options) {
-      return this.find(query, {
-        success: function(dv) {
-          var model = dv.first();
-          options.success(model);
-        },
-        error: function(dv, error) {
-          options.error(dv, error);
+    findOne: function(query, callback) {
+      return this.find(query, function(err, dv) {
+        if (err) {
+          callback(err);
+          return;
         }
+        
+        var model = dv.first();
+        callback(null, model);
       });
     },
+  });
+
+  ['save', 'destroy', 'fetch'].forEach(function(method) {
+    exports.Model.prototype[method] = function() {
+      var args = _.toArray(arguments);
+      var callback = args.pop();
+      args.push({ 
+        success: function(model) {
+          callback(null, model);
+        },
+        error: function(model, err) {
+          callback(err);
+        }
+      });
+      return Backbone.Model.prototype[method].apply(this, args);
+    };
   });
 
   exports.DataView = Backbone.Collection.extend({
@@ -107,8 +105,25 @@
     },
     import: function(data) {
 
-    }
+    },
+
+    fetch: function(callback) {
+      debugger;
+      var options = {
+        success: function(model) {
+          callback(null, model);
+        },
+        error: function(model, err) {
+          callback(err);
+        }
+      };
+
+      return Backbone.Collection.prototype.fetch.call(this, options);
+    },
   });
+
+
+
 
   Backbone.sync = function(method, model, options) {
     var storage = model.storage || model.model.storage;

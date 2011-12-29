@@ -44,7 +44,6 @@
 
       switch (method) {
       case "read":
-        debugger;
         var query = model.id ? model.toJSON() : model.queryParams;
         this.query(query, cb);
         break;

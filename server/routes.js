@@ -19,21 +19,20 @@ exports.setup = function(app) {
   });
 
   app.post("/signup", stacks.standard, function(req, res) {
-    console.log(rr.Users.signup);
-    rr.Users.signup({ 
-      username: req.body.username,
-      password: req.body.password,
-      verify: req.body.verify
-    }, 
-    function(err, user) {
-      if (err) {
-        console.error(err);
-        req.flash('error',err.toString());
-      } else {
-        req.session.user_id = user.id;
+    rr.Users.signup(
+      { username: req.body.username,
+        password: req.body.password,
+        verify: req.body.verify
       }
-      res.redirect("/");
-    });
+      , function(err, user) {
+        if (err) {
+          req.flash('error',err.toString());
+        } else {
+          req.session.user_id = user.id;
+        }
+        res.redirect("/");
+      }
+    );
   });
 
   app.get('/stream', stacks.standard, function(req,res){

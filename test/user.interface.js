@@ -47,7 +47,7 @@ module.exports = testMaker({
     },
     
     "sign up from homepage": function(test) {
-      test.expect(3);
+      test.expect(4);
       
       var user = userFixtures.randomUser();
       var browser = createBrowser();

@@ -30,7 +30,7 @@ exports.setup = function(app) {
         console.error(err);
         req.flash('error',err.toString());
       } else {
-        req.user = user;
+        req.session.user_id = user.id;
       }
       res.redirect("/");
     });

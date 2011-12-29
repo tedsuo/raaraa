@@ -3,7 +3,7 @@
 var middleware = require('./middleware'),
     rr = require("../raaraa");
 
-// ## exports.setup
+// ## exports.setup(app)
 //
 //  the routes module returns a setup function, which initializes the router.
 //
@@ -13,7 +13,7 @@ exports.setup = function(app) {
 //  
 
 // setup the middleware stacks
-  var stacks = middleware(app);
+  var stacks = middleware.getStacks(app);
 
 //
 
@@ -31,6 +31,7 @@ exports.setup = function(app) {
       title: 'RaaRaa -- Party People',
       user: req.user 
     });
+
   });
 
 // ## /signup
@@ -48,6 +49,7 @@ exports.setup = function(app) {
       , function(err, user) {
         if (err) {
           req.flash('error',err.toString());
+          console.error(err.toString());
         } else {
           req.session.user_id = user.id;
         }
@@ -63,25 +65,30 @@ exports.setup = function(app) {
 //
   app.post("/login", stacks.buffered_public, function(req, res) {
     rr.Users.login(
-      { username: req.body.username,
-        password: req.body.password }
-      , function(err, user) {
+      { 
+        username: req.body.username,
+        password: req.body.password
+      }, 
+      function(err, user) {
         if (err) {
           req.flash('error', err.toString());
+          console.error(err.toString());
         } else {
           req.session.user_id = user.id;
+          console.info('setting user session '+req.session.user_id);
         }
         res.redirect("/");
-      });
+      }
+    );
   });
 
 // ## /logout
-  app.get("/logout", stacks.standard, function(req, res) {
+  app.get("/logout", stacks.buffered_private, function(req, res) {
     req.session.user_id = null;
     res.redirect("/");
   });
 
-  app.post('/img', stacks.streaming, function(req,res){
+  app.post('/img', stacks.streaming_private, function(req,res){
     // upload a photo
   });
 };

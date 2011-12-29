@@ -1,24 +1,45 @@
+
+
 var middleware = require('./middleware'),
     rr = require("../raaraa");
 
-// ROUTES
+// ## exports.setup
+//
+//  the routes module returns a setup function, which initializes the router.
+//
+//  - **app**  express server
+
 exports.setup = function(app) {
+//  
+
+// setup the middleware stacks
   var stacks = middleware(app);
-  app.get('/', stacks.standard, function(req,res){
-    if(!req.user){
-      res.render("login.jade", {
-        title: 'RaaRaa -- Party People', 
-        errors: req.flash('error') 
-      });
-      return;
-    }
+
+//
+
+// # ROUTES
+//
+// RESTful http endpoints for RaaRaa
+
+//    
+
+// ## / 
+ 
+  app.get('/', stacks.buffered_private, function(req,res){
+    
     res.render("index.jade", {
       title: 'RaaRaa -- Party People',
       user: req.user 
     });
   });
 
-  app.post("/signup", stacks.standard, function(req, res) {
+// ## /signup
+//
+//  - **username**
+//  - **password**
+//  - **verify**
+//
+  app.post("/signup", stacks.buffered_public, function(req, res) {
     rr.Users.signup(
       { username: req.body.username,
         password: req.body.password,
@@ -35,7 +56,12 @@ exports.setup = function(app) {
     );
   });
 
-  app.post("/login", stacks.standard, function(req, res) {
+// ## /login
+//
+//  - **username**
+//  - **password**
+//
+  app.post("/login", stacks.buffered_public, function(req, res) {
     rr.Users.login(
       { username: req.body.username,
         password: req.body.password }
@@ -49,13 +75,10 @@ exports.setup = function(app) {
       });
   });
 
+// ## /logout
   app.get("/logout", stacks.standard, function(req, res) {
     req.session.user_id = null;
     res.redirect("/");
-  });
-
-  app.get('/stream', stacks.standard, function(req,res){
-    res.render("stream.jade", { title: 'RaaRaa -- My Stream' });
   });
 
   app.post('/img', stacks.streaming, function(req,res){

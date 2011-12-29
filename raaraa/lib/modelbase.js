@@ -52,7 +52,6 @@
       var dv = new dvType();
 
       dv.storage = this.prototype.storage;
-      debugger;
       dv.queryParams = _.extend({}, this.defaultQueryParams || {}, query);
 
       dv.bind("error", function(model, err, options) {
@@ -108,7 +107,6 @@
     },
 
     fetch: function(callback) {
-      debugger;
       var options = {
         success: function(model) {
           callback(null, model);

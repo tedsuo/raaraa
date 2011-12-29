@@ -36,7 +36,7 @@
       // model here is either a Model or DataView
       var cb = function(err, response) {
         if (err) {
-          options.error(model, err, options);
+          options.error(err);
         } else {
           options.success(response);
         }

@@ -24,7 +24,8 @@
     "underscore": ">=1.2.3",
     "socket.io": ">=0.8.7",
     "backbone": ">=0.5.3",
-    "filed": ">=0.0.4"
+    "filed": ">=0.0.4",
+    "connect-cookie-session": ">=0.0.2"
   },
   "devDependencies": {
     "nodeunit": ">=0.6.4",

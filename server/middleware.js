@@ -5,8 +5,9 @@
 //
 
 // ### requires
-var express = require('express');
-
+var express = require('express'),
+    createSessionMiddleware = require('connect-cookie-session');
+    
 // ### constants
 var LOG_FORMAT = ':method :url :status :res[content-length] - :response-time ms';
 
@@ -77,7 +78,7 @@ var cookie_parser = express.cookieParser();
 
 // ## session
 //
-var session = express.session({secret: 'this is fake'});
+var session = createSessionMiddleware({secret: 'this is fake'});
 
 // ## body_parser
 //

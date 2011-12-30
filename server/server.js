@@ -39,6 +39,8 @@ rr.on('ready',function(){
   console.info('RaaRaa http service listening on '+app.host+':'+app.port);
 });
 
+rr.on('error', function(e) { console.error(e.toString()) });
+
 app.on("error", function(e) { console.error(e.message); });
 
 app.on("close", function() { 

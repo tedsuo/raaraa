@@ -19,7 +19,6 @@ var RaaRaa = function RaaRaa(){
   this._initializeModels();
   this._dbInitialize(function(err){
     if(err){
-      console.error(err);
       this.emit('error',err);
       return;
     }

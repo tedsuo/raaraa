@@ -3,8 +3,6 @@ _ = require("underscore"),
 db = require("../db"),
 BSON = require("mongoq").BSON;
 
-console.log(DataStorage);
-
 var MongoStorage = module.exports = function MongoStorage(options) {
   DataStorage.apply(this, arguments);
 };

@@ -49,7 +49,13 @@
       this.findOne(
         { username: user_data.username,
           password: this.hashPass(user_data.password) },
-        cb
+        function(err, user) {
+          if (err) { return cb(err); }
+          if (!user) {
+            return cb(new Error("Username or password does not match"));
+          }
+          cb(null, user);
+        }
       );
     },
 

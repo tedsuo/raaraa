@@ -169,6 +169,27 @@ module.exports = testMaker({
       });
     },
 
+    "log in with bad password": function(test) {
+      test.expect(3);
+
+      logIn({ username: sign_up_user.username,
+              password: 'WRONG' }, createBrowser(), function(e, browser) {
+        test.ok(browser.success,
+                browser.statusCode+" Error: "+browser.html());
+
+        if(browser.error) {
+          test.ifError(browser.error);
+          return test.done();
+        }
+
+        test.ok(browser.html("#signup"),
+                "We should be seeing the login page");
+        test.ok(!browser.html("#logout-btn"),
+                "We should not be seeing a logout button");
+        test.done();
+      });
+    },
+
   }
 });
 

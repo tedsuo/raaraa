@@ -9,25 +9,21 @@ var kick_server = createKickableProcess(
   fork,
   __dirname+'/../server',
   [],
-  {
-    env: {PORT:9001}
-  }
+  { env: {PORT:9001} }
 );
 
 // start RaaRaa
 kick_server();
 
-
-// TODO: run_tests currently not working
+// create test runner
 var run_tests = createKickableProcess(
   spawn,
   'nodeunit',
-  [process.cwd()+'/test'],
-  { env: {
-      cwd:process.cwd(),
-      PORT:9003
-    }}
+  ['/test'],
+  { env: _.extend({PORT:9003, NODE_ENV:'test'}, process.env) }
 );
+
+// run tests
 run_tests();
 
 // watch codebase for changes
@@ -64,18 +60,12 @@ function createKickableProcess(invocation,command,args,o){
     }
     
     console.warn('DEV starting '+command);
-    console.warn('DEV args: ',args);
-    console.warn('DEV options: ',o);
+    
     node = invocation(command,args,_.extend({},o));
 
     if(node && node.stdout){
-      node.stdout.on('data', function (data) {
-        console.log(data);
-      });
-
-      node.stderr.on('data', function (data) {
-        console.log(command+' stderr: ' + data);
-      });
+      node.stdout.pipe(process.stdout);
+      node.stderr.pipe(process.stdout);
     }
   }
 };

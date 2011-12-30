@@ -1,9 +1,9 @@
 
-
+// ### requires
 var middleware = require('./middleware'),
     rr = require("../raaraa");
 
-// ## exports.setup(app)
+// ## _exports:_ setup(app)
 //
 //  the routes module returns a setup function, which initializes the router.
 //
@@ -19,12 +19,14 @@ exports.setup = function(app) {
 
 // # ROUTES
 //
-// RESTful http endpoints for RaaRaa
+// RESTful HTTP API for RaaRaa
 
 //    
 
-// ## / 
- 
+// ## _GET_ / 
+//
+// load the main application.
+//
   app.get('/', stacks.buffered_private, function(req,res){
     
     res.render("index.jade", {
@@ -34,7 +36,7 @@ exports.setup = function(app) {
 
   });
 
-// ## /signup
+// ## _POST_ /signup
 //
 //  - **username**
 //  - **password**
@@ -42,7 +44,8 @@ exports.setup = function(app) {
 //
   app.post("/signup", stacks.buffered_public, function(req, res) {
     rr.Users.signup(
-      { username: req.body.username,
+      { 
+        username: req.body.username,
         password: req.body.password,
         verify: req.body.verify
       }
@@ -58,7 +61,7 @@ exports.setup = function(app) {
     );
   });
 
-// ## /login
+// ## _POST_ /login
 //
 //  - **username**
 //  - **password**
@@ -82,13 +85,15 @@ exports.setup = function(app) {
     );
   });
 
-// ## /logout
+// ## _GET_ /logout
   app.get("/logout", stacks.buffered_private, function(req, res) {
     req.session.user_id = null;
     res.redirect("/");
   });
 
+// ## _POST_ /img
+// upload a photo!
   app.post('/img', stacks.streaming_private, function(req,res){
-    // upload a photo
+    
   });
 };

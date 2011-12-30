@@ -1,23 +1,25 @@
-
-// # Middleware Stacks
+// # Middleware
 //
-//  stacks are layers of middleware, bundled together by type of http request.
+//  Middleware consists of two pieces: stacks and plugins.  Stacks are layers of
+//  middleware plugins, bundled together by type of http request.
 //
 
+// ### requires
 var express = require('express');
 
-// ### var LOG_FORMAT
+// ### constants
 var LOG_FORMAT = ':method :url :status :res[content-length] - :response-time ms';
 
 
-// ## exports.getStacks(app)
+// ## _exports:_ getStacks(app)
 //
-//  the routes module returns a setup function, which initializes the router.
-//
-//  - **app**  express server
+//  - **app:**  express server
 //
 module.exports.getStacks = function(app) {  
   return {
+
+// # Middleware Stacks
+//
 
 // ## buffered_private
 //
@@ -65,14 +67,23 @@ module.exports.getStacks = function(app) {
 // 
 // 
 
+// ## logger
+//
 var logger = express.logger(LOG_FORMAT);
+
+// ## cookie_parser 
+//
 var cookie_parser = express.cookieParser();
+
+// ## session
+//
 var session = express.session({secret: 'this is fake'});
+
+// ## body_parser
+//
 var body_parser = express.bodyParser();
 
-// ## getCurrentUser
-//
-//  you guessed it.
+// ## get\_current\_user
 //
 var get_current_user = function(req,res,next){
   if(!req.session.user_id){
@@ -96,10 +107,8 @@ var get_current_user = function(req,res,next){
 
 // ## authenticate
 //
-//  authenticate!
-//
 var authenticate = function(req,res,next){
-  // ###TODO:  
+  // TODO: 
   //  checking to see if the user object 
   //  exists is not really autentication 
   if(!req.user){

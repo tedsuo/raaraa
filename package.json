@@ -30,6 +30,7 @@
   "devDependencies": {
     "nodeunit": ">=0.6.4",
     "zombie": ">=0.12.9",
-    "nodewatch": ">=0.0.4 "
+    "nodewatch": ">=0.0.4 ",
+    "docco": ">=0.3.0"
   }
 }

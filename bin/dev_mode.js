@@ -1,8 +1,29 @@
+console.error('*******');
+console.error(process.cwd());
+console.error('*******');
 var watch = require('nodewatch'),
     _ = require('underscore'),
     fork = require('child_process').fork,
     spawn = require('child_process').spawn;
 
+// ### constants
+
+// - current working directory
+var CWD = process.cwd();
+
+// - watch list of files and directories to monitor.  Not recursive.
+var WATCH_LIST = [
+  'config.js',
+  'images',
+  'lib',
+  'node_modules',
+  'raaraa',
+  'raaraa/lib',
+  'raaraa/models',
+  'server',
+  'test',
+  'test/lib'
+];
 
 // create the web server
 var kick_server = createKickableProcess( 
@@ -26,34 +47,45 @@ var run_tests = createKickableProcess(
 // run tests
 run_tests();
 
+// documentation generation
+var write_doc = createKickableProcess( 
+  fork,
+  __dirname+'/../lib/docco/bin/docco'
+);
+
 // watch codebase for changes
-watch
-  .add('./config.js')
-  .add('./images')
-  .add('./lib')
-  .add('./node_modules')
-  .add('./raaraa')
-  .add('./raaraa/lib')
-  .add('./raaraa/models')
-  .add('./server')
-  .add('./test')
-  .add('./test/lib')
-  .onChange(function(file,prev,curr){
+WATCH_LIST.forEach(function(path){
+  watch.add(__dirname+'/../'+path);
+});
+
+// on file change, restart everything
+watch.onChange(function(file,prev,curr){
     kick_server();
     run_tests();
+    var file_path = file.slice(CWD.length+1);
+    console.error('*******');
+    console.error(file_path);
+    console.error('*******');
+    write_doc(['--structured',file_path]);
   }
 );
 
 console.log('DEV watching codebase for changes');
 
 
-
+// ## createKickableProcess(invocation,command,args,o)
+//
+// spawns or forks a child process, and returns a function that restarts the
+// process every time you call it.
+//
 function createKickableProcess(invocation,command,args,o){
   var node = {};
   var args = args || [];
   var o = o || {};
 
-  return function(){
+  return function(new_args){
+    args = new_args || args;
+
     if(node.pid){
       console.warn('DEV kicking '+command)
       node.kill();

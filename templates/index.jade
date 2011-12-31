@@ -1,23 +1,26 @@
-#rara-container
-  #header
-    #header-logo.logo
-      h1 RaaRaa
-      h3 Party Party
-    #header-account
-      img.small-profile-pic(src='/img/profile/example-3.jpg')
-      h3.name= user.get('username')
-      a#logout-btn(href='/logout') Logout
-    a#invite-btn(href='#invite') Invite
-    #content-selector
-      input#show-photos(type='checkbox')
-      label(for='show-photos') Photos
-      input#show-shouts(type='checkbox')
-      label(for='show-shouts') Shouts
-      input#show-friends(type='checkbox')
-      label(for='show-friends') Friends
-    .clear
-    #canvas
-      #col-1
-      #col-2
-      #col-3
-    #footer
+extends layout
+
+block content
+  #rara-container
+    #header
+      #header-logo.logo
+        h1 RaaRaa
+        h3 Party Party
+      #header-account
+        img.small-profile-pic(src='/img/profile/example-3.jpg')
+        h3.name= user.get('username')
+        a#logout-btn(href='/logout') Logout
+      a#invite-btn(href='#invite') Invite
+      #content-selector
+        input#show-photos(type='checkbox')
+        label(for='show-photos') Photos
+        input#show-shouts(type='checkbox')
+        label(for='show-shouts') Shouts
+        input#show-friends(type='checkbox')
+        label(for='show-friends') Friends
+      .clear
+      #canvas
+        #col-1
+        #col-2
+        #col-3
+      #footer

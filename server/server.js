@@ -25,6 +25,7 @@ static_server.setup(app);
 // setup views
 app.set('views', __dirname + '/../templates');
 app.set('view engine', 'jade');
+app.set('view options', { layout: false });
 
 // setup routes
 routes.setup(app);

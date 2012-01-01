@@ -10,28 +10,30 @@ var middleware = require('./middleware'),
 //  - **app**  express server
 
 exports.setup = function(app) {
-//  
 
 // setup the middleware stacks
   var stacks = middleware.getStacks(app);
 
-//
-
 // # ROUTES
 //
 // RESTful HTTP API for RaaRaa
-
-//    
+ 
 
 // ## _GET_ / 
 //
 // load the main application.
 //
   app.get('/', stacks.buffered_private, function(req,res){
-    
+
     res.render("index.jade", {
       title: 'RaaRaa -- Party People',
-      user: req.user 
+      user: req.user,
+      compiled_scripts_src: false,
+      script_paths: [
+        'raaraa/raaraa-browser.js',
+        'raaraa/lib/modelbase.js',
+        'raaraa/models/user.js'
+      ]
     });
 
   });

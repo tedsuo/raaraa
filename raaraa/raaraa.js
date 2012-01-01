@@ -15,7 +15,7 @@ var RaaRaa = function RaaRaa(){
   EventEmitter.call(this);
   this.version = VERSION;
   this.db = db;
-  this.lib_dirname = __dirname + '/lib';
+  this.lib_dirname = __dirname+"/";
   this._initializeModels();
   this._dbInitialize(function(err){
     if(err){

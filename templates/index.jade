@@ -1,5 +1,12 @@
 extends layout
 
+block append scripts
+  if compiled_scripts_src
+    script(src="#{compiled_scripts_src}")
+  else
+    each script_path in script_paths
+      script(src="#{script_path}")
+
 block content
   #rara-container
     #header

@@ -1,6 +1,3 @@
-console.error('*******');
-console.error(process.cwd());
-console.error('*******');
 var watch = require('nodewatch'),
     _ = require('underscore'),
     fork = require('child_process').fork,
@@ -22,7 +19,8 @@ var WATCH_LIST = [
   'raaraa/models',
   'server',
   'test',
-  'test/lib'
+  'test/lib',
+  'templates'
 ];
 
 // create the web server
@@ -63,9 +61,6 @@ watch.onChange(function(file,prev,curr){
     kick_server();
     run_tests();
     var file_path = file.slice(CWD.length+1);
-    console.error('*******');
-    console.error(file_path);
-    console.error('*******');
     write_doc(['--structured',file_path]);
   }
 );

@@ -1,98 +1,130 @@
+// ### requirements
 var watch = require('nodewatch'),
     _ = require('underscore'),
-    fork = require('child_process').fork,
-    spawn = require('child_process').spawn;
+    clc = require('cli-color'),
+    spawn = require('child_process').spawn,
+    config = require('../dev_mode_config');
 
 // ### constants
+var CWD = config.cwd || process.cwd();
+var WATCH_LIST = config.watch_list;
+var processes = config.processes;
 
-// - current working directory
-var CWD = process.cwd();
+// # Main
+//
+process.nextTick(function(){
+  // initialze sub-processes
+  processes.forEach(function(p){
+    p.process = new SubProcess(p);
+  });
 
-// - watch list of files and directories to monitor.  Not recursive.
-var WATCH_LIST = [
-  'config.js',
-  'images',
-  'lib',
-  'node_modules',
-  'raaraa',
-  'raaraa/lib',
-  'raaraa/models',
-  'server',
-  'test',
-  'test/lib',
-  'templates'
-];
+  // watch codebase for changes
+  WATCH_LIST.forEach(function(path){
+    watch.add(__dirname+'/../'+path);
+  });
 
-// create the web server
-var kick_server = createKickableProcess( 
-  fork,
-  __dirname+'/../server',
-  [],
-  { env: {PORT:9001} }
-);
-
-// start RaaRaa
-kick_server();
-
-// create test runner
-var run_tests = createKickableProcess(
-  spawn,
-  'nodeunit',
-  ['/test'],
-  { env: _.extend({PORT:9003, NODE_ENV:'test'}, process.env) }
-);
-
-// run tests
-run_tests();
-
-// documentation generation
-var write_doc = createKickableProcess( 
-  fork,
-  __dirname+'/../lib/docco/bin/docco'
-);
-
-// watch codebase for changes
-WATCH_LIST.forEach(function(path){
-  watch.add(__dirname+'/../'+path);
+  // if any file changes, restart everything
+  watch.onChange(function(file,prev,curr){
+      var file_path = file.slice(CWD.length+1);
+      processes.forEach(function(p,i){
+        processes[i].process.restart(file_path);
+      });
+    }
+  );
+  console.dev('DEV MODE watching codebase for changes');
 });
 
-// on file change, restart everything
-watch.onChange(function(file,prev,curr){
-    kick_server();
-    run_tests();
-    var file_path = file.slice(CWD.length+1);
-    write_doc(['--structured',file_path]);
+
+// ## _class_ SubProcess
+//
+// spawns a restartable child process
+//
+function SubProcess(o){
+  // initialize arguments
+  this.command = o.command || error('o.command required');
+  this.color = o.color || error('o.color required');
+  this.name = o.name || error('o.name required');
+  this.args = o.args || [];
+  this.options = o.options || {};
+  this.prompt = o.prompt || this.name;
+
+  // initialize internal properties;
+  this.node = {};
+  this.original_args = this.args.slice(0);
+  this.node_count = 0;
+
+  // start the child process unless directed not to
+  if(o.on_startup !== false){
+    this.start();
   }
-);
+}
 
-console.log('DEV watching codebase for changes');
-
-
-// ## createKickableProcess(invocation,command,args,o)
+// ### SubProcess: start()
+// 
+// spawns a child process
 //
-// spawns or forks a child process, and returns a function that restarts the
-// process every time you call it.
-//
-function createKickableProcess(invocation,command,args,o){
-  var node = {};
-  var args = args || [];
-  var o = o || {};
+SubProcess.prototype.start =  function (){
+  var name = this.name + ' ' + this.node_count;
+  console.dev('DEV MODE starting ' + name);
+  
+  // run the command as a child process
+  this.node = spawn(this.command,this.args,_.extend({},this.options));
+  
 
-  return function(new_args){
-    args = new_args || args;
-
-    if(node.pid){
-      console.warn('DEV kicking '+command)
-      node.kill();
-    }
-    
-    console.warn('DEV starting '+command);
-    
-    node = invocation(command,args,_.extend({},o));
-
-    if(node && node.stdout){
-      node.stdout.pipe(process.stdout);
-      node.stderr.pipe(process.stdout);
-    }
+  if(this.node && this.node.stdout){
+    var self = this;
+    this.node.stdout.on('data',function(data){
+      process.stdout.write(
+        clc[self.color](self.prompt+': ')+data
+      );
+    });
+    this.node.stderr.on('data',function(data){
+      process.stderr.write(
+        clc[self.color](self.prompt+': ')+clc.red('ERROR ')+data
+      );
+    });
+    this.node.on('exit',function(){
+      console.dev('DEV MODE '+name+' exiting');
+      self.node.pid = undefined;
+    });
   }
 };
+  
+// ### SubProcess: restart( file_name )
+// 
+// kills the process, re-issues original command, potentially with 
+// new arguments.
+//
+SubProcess.prototype.restart = function(file_path){
+  this.args = this.original_args.slice(0);
+
+  this.args.forEach(function(arg,i){
+    if(arg === '[[file_path]]'){
+      this.args[i] = file_path;
+      }
+  }.bind(this));
+
+  if(this.node.pid){
+    console.dev('DEV MODE killing '+this.name+' '+this.node_count)
+    this.node.kill();
+  }
+
+  ++this.node_count;
+  this.start();
+};
+
+
+// # Helpers
+// - dev log
+console.dev = function(msg){
+  console.log(
+    clc.bright.green(
+      '**********************  '+msg+' **********************'
+    )
+  );
+}
+
+// - error
+function error(msg){
+  throw new Error(msg);
+}

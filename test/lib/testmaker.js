@@ -26,7 +26,6 @@ module.exports = function(options){
   };
 
   var afterEach = function(next) {
-    console.log("Test finished at: " + Date());
     testsRun++;
 
     if (options.afterAll && (testsRun >= totalTests)) {

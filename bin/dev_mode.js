@@ -47,8 +47,14 @@ function SubProcess(o){
   this.args = o.args || [];
   this.options = o.options || {};
   this.prompt = o.prompt || this.name;
+  
+  // child processes seem to work better when they are passed
+  // process.env
+  if(this.options.env){
+    this.options.env = _.extend(this.options.env, process.env);
+  }
 
-  // initialize internal properties;
+  // initialize internal properties
   this.node = {};
   this.original_args = this.args.slice(0);
   this.node_count = 0;

@@ -1,8 +1,9 @@
-var _ = require('underscore');
-
+// # DEV MODE
 module.exports = {
 
-  // - watch list of files and directories to monitor.  Not recursive.
+// ## watch_list
+// List of files and directories to monitor.
+// Not recursive.
   watch_list: [
     'bin',
     'config.js',
@@ -18,9 +19,10 @@ module.exports = {
     'templates'
   ],
 
+// ## processes
   processes: [
 
-  // ### RaaRaa dev server
+// ### RaaRaa dev server
     {
       name: 'Dev Server',
       prompt: 'R',
@@ -28,11 +30,11 @@ module.exports = {
       command: 'node',
       args: [__dirname+'/server'],
       options: { 
-        env: _.extend({PORT:9001, NODE_ENV:'development'}, process.env) 
+        env: {PORT:9001, NODE_ENV:'development'}
       }
     },
 
-  // ### nodeunit tests
+// ### nodeunit tests
     {
       name: 'Tests',
       prompt: 'T',
@@ -40,11 +42,11 @@ module.exports = {
       command: 'nodeunit',
       args: ['/test'],
       options: { 
-        env: _.extend({PORT:9003, NODE_ENV:'test'}, process.env) 
+        env: {PORT:9003, NODE_ENV:'test'}
       }
     },
 
-  // ### docco document generation
+// ### docco document generation
     {
       name: 'Docco',
       prompt: 'D',

@@ -98,7 +98,8 @@ module.exports = testMaker({
 
       signUp(user, browser, function(e, browser) {
           test.equal(browser.text("#errors"),
-                     "Error: Passwords do not match");
+                     "Error: The passwords you entered do not "
+                     + "match. Please try again.");
           test.done();
       });
     },

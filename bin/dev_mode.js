@@ -104,10 +104,9 @@ SubProcess.prototype.start =  function (){
 SubProcess.prototype.restart = function(file_path){
   this.args = this.original_args.slice(0);
 
+  // replace [[file_path]] token
   this.args.forEach(function(arg,i){
-    if(arg === '[[file_path]]'){
-      this.args[i] = file_path;
-      }
+    this.args[i] = arg.replace(/\[\[file_path\]\]/gi,file_path);
   }.bind(this));
 
   if(this.node.pid){

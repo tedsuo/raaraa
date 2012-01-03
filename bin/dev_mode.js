@@ -91,6 +91,7 @@ SubProcess.prototype.start =  function (){
     });
     this.node.on('exit',function(){
       console.dev('DEV MODE '+name+' exiting');
+      console.dev(Date());
       self.node.pid = undefined;
     });
   }
@@ -122,11 +123,21 @@ SubProcess.prototype.restart = function(file_path){
 // # Helpers
 // - dev log
 console.dev = function(msg){
-  console.log(
-    clc.bright.green(
-      '**********************  '+msg+' **********************'
-    )
-  );
+  var c_width = 80;
+  var center = function(msg) {
+    var num_stars = (c_width - (msg.length + 2))/2;
+    var star_str = '';
+    _(num_stars).times(function() {
+      star_str += '*';
+    });
+    var log_msg = star_str + ' ' + msg + ' ' + star_str;
+    while(log_msg.length <= c_width) {
+      log_msg += '*';
+    }
+    return log_msg;
+  }
+
+  console.log(clc.bright.green(center(msg)));
 }
 
 // - error

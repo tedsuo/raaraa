@@ -121,10 +121,16 @@ module.exports = testMaker({
 
         test.ok(!browser.html("#signup"),
                 "We should not be seeing the login page");
-        test.ok(browser.html("#logout-btn"),
-                "We should be seeing a logout button");
 
-        test.done();
+        browser.wait(
+          function(window) {
+            return browser.html("#logout-btn");
+          }, function() {
+            test.ok(browser.html("#logout-btn"),
+                    "We should be seeing a logout button");
+            test.done();
+          }
+        );
       });
     },
 
@@ -132,27 +138,33 @@ module.exports = testMaker({
       test.expect(3);
 
       lastBrowser().visit('/', function(e, browser) {
-        if (!browser.html("#logout-btn")) {
-          test.ok(browser.html("#logout-btn"),
-                 "Logout button not detected!");
-          return test.done();
-        }
+        browser.wait(
+          function(window) {
+            return browser.html("#logout-btn");
+          }, function() {
+            if (!browser.html("#logout-btn")) {
+              test.ok(browser.html("#logout-btn"),
+                      "Logout button not detected!");
+              return test.done();
+            }
 
-        browser.clickLink("#logout-btn", function(e, browser) {
-          test.ok(browser.success,
-                  browser.statusCode+" Error: "+browser.html());
+            browser.clickLink("#logout-btn", function(e, browser) {
+              test.ok(browser.success,
+                      browser.statusCode+" Error: "+browser.html());
 
-          if(browser.error) {
-            test.ifError(browser.error);
-            return test.done();
+              if(browser.error) {
+                test.ifError(browser.error);
+                return test.done();
+              }
+
+              test.ok(browser.html("#signup"),
+                      "We should be seeing the login page");
+              test.ok(!browser.html("#logout-btn"),
+                      "We should not be seeing a logout button");
+              test.done();
+            });
           }
-
-          test.ok(browser.html("#signup"),
-                  "We should be seeing the login page");
-          test.ok(!browser.html("#logout-btn"),
-                  "We should not be seeing a logout button");
-          test.done();
-        });
+        );
       });
     },
 
@@ -170,12 +182,19 @@ module.exports = testMaker({
 
         test.ok(!browser.html("#signup"),
                 "We should not be seeing the login page");
-        test.ok(browser.html("#logout-btn"),
-                "We should be seeing a logout button");
-        test.equal(browser.text("#header-account .name"),
-                   sign_up_user.username,
-                   "We should be seeing the current user icon");
-        test.done();
+        browser.wait(
+          function(window) {
+            return browser.html("#logout-btn");
+          }, function() {
+            test.ok(browser.html("#logout-btn"),
+                    "We should be seeing a logout button");
+            test.equal(browser.text("#header-account .name"),
+                       sign_up_user.username,
+                       "We should be seeing the current user icon");
+
+            test.done();
+          }
+        );
       });
     },
 

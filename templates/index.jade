@@ -7,6 +7,12 @@ block append scripts
     each script_path in script_paths
       script(src="#{script_path}")
 
+  script
+    $(function() {
+      RaaRaa.init({ socket: { host: "#{socket_host}",
+                              port: "#{socket_port}" }});
+    });
+
 block content
   #rara-container
     #header
@@ -14,9 +20,6 @@ block content
         h1 RaaRaa
         h3 Party Party
       #header-account
-        img.small-profile-pic(src='/img/profile/example-3.jpg')
-        h3.name= user.get('username')
-        a#logout-btn(href='/logout') Logout
       a#invite-btn(href='#invite') Invite
       #content-selector
         input#show-photos(type='checkbox')
@@ -31,3 +34,6 @@ block content
         #col-2
         #col-3
       #footer
+
+  script(type="text/template", id="user-badge-template", src="/templates/user-badge.jade")
+

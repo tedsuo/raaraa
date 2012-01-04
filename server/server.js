@@ -14,6 +14,7 @@ var PORT = process.env.PORT || 9002;
 // RaaRaa http and socket.io server
 var app = express.createServer();
 var io = socketIO.listen(app);
+
 console.info('RaaRaa v'+rr.version+': http and socket.io server');
 
 // export server
@@ -36,6 +37,19 @@ rr.on('ready',function(){
   app.listen(PORT,HOST);
   app.host = HOST;
   app.port = PORT;
+
+  io.on("connection", function(client) {
+    client.on("set session", function(session_id) {
+      // TODO set unique session ID when logging in,
+      // write rr.getUser() and rr.setUser()
+      var user = rr.getUser(session_id);
+      if (user) {
+        client.emit("current user", user.toJSON());
+      } else {
+        client.emit("error", "User is not logged in, should not be setting up a socket");
+      }
+    });
+  });
 
   console.info('RaaRaa http service listening on '+app.host+':'+app.port);
 });

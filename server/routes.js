@@ -29,10 +29,14 @@ exports.setup = function(app) {
       title: 'RaaRaa -- Party People',
       user: req.user,
       compiled_scripts_src: false,
+      socket_host: app.host,
+      socket_port: app.port,
       script_paths: [
         'raaraa/raaraa-browser.js',
         'raaraa/lib/modelbase.js',
-        'raaraa/models/user.js'
+        'raaraa/models/user.js',
+        'raaraa/lib/viewbase.js',
+        'raaraa/views/user.js'
       ]
     });
 
@@ -56,6 +60,11 @@ exports.setup = function(app) {
           req.flash('error',err.toString());
           console.error(err.toString());
         } else {
+          // TODO - in here we need to set a unique session ID 
+          // cookie that the client can use to retrieve the 
+          // logged-in user via socket.io
+          // Make methods rr.setUser(session_id, user) and 
+          // rr.getUser(session_id)
           req.session.user_id = user.id;
         }
         res.redirect("/");

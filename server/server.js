@@ -38,16 +38,19 @@ rr.on('ready',function(){
   app.host = HOST;
   app.port = PORT;
 
-  io.on("connection", function(client) {
+  io.sockets.on("connection", function(client) {
+    client.emit("get session");
     client.on("set session", function(session_id) {
       // TODO set unique session ID when logging in,
       // write rr.getUser() and rr.setUser()
       var user = rr.getUser(session_id);
-      if (user) {
-        client.emit("current user", user.toJSON());
-      } else {
-        client.emit("error", "User is not logged in, should not be setting up a socket");
-      }
+      client.set("session", session_id, function() {
+        if (user) {
+          client.emit("current user", user.toJSON());
+        } else {
+          client.emit("error", "User is not logged in, should not be setting up a socket");
+        }
+      });
     });
   });
 
@@ -58,6 +61,11 @@ rr.on('error', function(e) { console.error(e.toString()) });
 
 app.on("error", function(e) { console.error(e.message); });
 
-app.on("close", function() { 
+app.on("close", function() {
+  io.server.on("close", function() {
+    io.sockets.emit("close");
+    io.sockets.close();
+  });
+  io.server.close();
   console.warn('RaaRaa http service stopped listening on '+app.host+':'+app.port) 
 });

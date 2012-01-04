@@ -10,7 +10,8 @@ block append scripts
   script
     $(function() {
       RaaRaa.init({ socket: { host: "#{socket_host}",
-                              port: "#{socket_port}" }});
+                              port: "#{socket_port}" },
+                    user_id: "#{user.id.toString()}" });
     });
 
 block content
@@ -20,6 +21,7 @@ block content
         h1 RaaRaa
         h3 Party Party
       #header-account
+        a#logout-btn(href='/logout') Logout
       a#invite-btn(href='#invite') Invite
       #content-selector
         input#show-photos(type='checkbox')

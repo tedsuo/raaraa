@@ -16,6 +16,7 @@ var RaaRaa = function RaaRaa(){
   this.version = VERSION;
   this.db = db;
   this.lib_dirname = __dirname+"/";
+  this._logged_in_users = {}; // TODO: use redis
   this._initializeModels();
   this._dbInitialize(function(err){
     if(err){
@@ -44,6 +45,14 @@ RaaRaa.prototype = {
       }
     );
   },
+
+  setUser: function(session_id, user) {
+    this._logged_in_users[session_id] = user;
+  },
+
+  getUser: function(session_id) {
+    return this._logged_in_users[session_id];
+  }
 };
 
 // inherit from EventEmitter

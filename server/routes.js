@@ -1,7 +1,7 @@
 
 // ### requires
 var middleware = require('./middleware'),
-    rr = require("../raaraa");
+rr = require("../raaraa");
 
 // ## _exports:_ setup(app)
 //
@@ -66,6 +66,7 @@ exports.setup = function(app) {
           // Make methods rr.setUser(session_id, user) and 
           // rr.getUser(session_id)
           req.session.user_id = user.id;
+          rr.setUser(user.id.toString(), user);
         }
         res.redirect("/");
       }
@@ -89,6 +90,7 @@ exports.setup = function(app) {
           console.error(err.toString());
         } else {
           req.session.user_id = user.id;
+          rr.setUser(user.id.toString(), user);
           console.info('setting user session '+req.session.user_id);
         }
         res.redirect("/");

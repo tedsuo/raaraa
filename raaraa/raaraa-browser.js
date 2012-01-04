@@ -7,20 +7,34 @@ if (!RaaRaa) var RaaRaa = {};
   // initialize
   RaaRaa.init = function(options) {
     var socket
-      = io.connect(options.socket.host + ":" + options.socket.port);
-    socket.on('connect', function() {
-      socket.emit("set session"
-                  , $.cookie("sessionID"));
+      = io.connect("http://" + options.socket.host + ":" + options.socket.port);
+
+    socket.on("get session", function() {
+      socket.emit("set session", options.user_id);
     });
+
     socket.on('current user', function(user_json) {
       var model = new RaaRaa.Users();
       RaaRaa.current_user = model;
-      model.inflate(user_json);
-      var badge = new UserBadgeView({
+      model.set(user_json);
+      var badge = new RaaRaa.views.UserBadgeView({
         model: model,
         id: 'header-account',
         template: 'user-badge'
       });
+    });
+
+    socket.on('error', function(msg) {
+      var model = new RaaRaa.Error(msg);
+      var err = new RaaRaa.views.Error({
+        model: model,
+        id: 'error',
+        template: 'error'
+      });
+    });
+
+    socket.on('close', function() {
+      socket.end();
     });
 
     RaaRaa.socket = socket;

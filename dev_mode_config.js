@@ -13,6 +13,7 @@ module.exports = {
     'raaraa',
     'raaraa/lib',
     'raaraa/models',
+    'raaraa/views',
     'server',
     'test',
     'test/lib',
@@ -24,7 +25,7 @@ module.exports = {
 
 // ### RaaRaa dev server
     {
-      name: 'Dev Server',
+      name: 'Dev Server http:/localhost:9001/',
       prompt: 'R',
       color: 'magenta',
       command: 'node',

@@ -53,7 +53,6 @@ module.exports = [{
 
   hashPass: function(pass) {
     var hash = crypto.createHash('sha256');
-    hash.update("y34s4y3r"+pass);
-    return hash.digest("hex");
+    return hash.update("y34s4y3r"+pass).digest("hex");
   }
 }];

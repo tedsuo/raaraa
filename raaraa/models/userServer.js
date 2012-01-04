@@ -44,7 +44,7 @@ module.exports = [{
       function(err, user) {
         if (err) { return cb(err); }
         if (!user) {
-          return cb(new Error("Username or password does not match"));
+          return cb(new Error("Bad username or password."));
         }
         cb(null, user);
       }

@@ -69,6 +69,5 @@ rr.on('error', function(e) { console.error(e.toString()) });
 app.on("error", function(e) { console.error(e.message); });
 
 app.on("close", function() {
-  io.server.close();
   console.warn('RaaRaa http service stopped listening on '+app.host+':'+app.port) 
 });

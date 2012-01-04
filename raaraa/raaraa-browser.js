@@ -25,6 +25,8 @@ if (!RaaRaa) var RaaRaa = {};
       });
 
       RaaRaa.user_badge.render();
+
+      socket.disconnect();
     });
 
     socket.on('error', function(msg) {

@@ -10,60 +10,61 @@ if (!RaaRaa) var RaaRaa = {};
       = io.connect("http://" + options.socket.host + ":" + options.socket.port);
 
     socket.on("get session", function() {
+      console.debug("responding to session handshake");
       socket.emit("set session", options.user_id);
     });
 
     socket.on('current user', function(user_json) {
+      console.debug("got current user");
       var model = new RaaRaa.Users();
       RaaRaa.current_user = model;
       model.set(user_json);
-      var badge = new RaaRaa.views.UserBadgeView({
+
+      RaaRaa.user_badge = new RaaRaa.views.UserBadgeView({
         model: model,
-        id: 'header-account',
-        template: 'user-badge'
       });
+
+      RaaRaa.user_badge.render();
     });
 
     socket.on('error', function(msg) {
-      var model = new RaaRaa.Error(msg);
+      console.error(msg);
+/*      var model = new RaaRaa.Error(msg);
       var err = new RaaRaa.views.Error({
         model: model,
         id: 'error',
         template: 'error'
-      });
+      });*/
     });
 
     socket.on('close', function() {
-      socket.end();
+      console.debug("closing socket");
+      socket.socket.disconnect();
     });
 
     RaaRaa.socket = socket;
   };
 
-  // get a jade template by name
-  RaaRaa.template = _.memoize(function(name) {
-    return document.getElementById(name + '-template')
-      .innerHTML.trim();
-  });
+  RaaRaa.template = function(name) {
+    return $("#"+name+"-template").html().trim();
+  };
 
-  // cache compiled templates
   var _compiled_templates = {};
+
+  var renderTemplate = function(name) {
+    var templ = RaaRaa.template(name);
+    var fn = _compiled_templates[name]
+      = _compiled_templates[name] || jade.compile(templ);
+    return fn;
+  };
 
   // compile and render a template
   RaaRaa.render = function(name, obj) {
-    var el = document.createElement('div')
-        , fn;
-
-    if (_compiled_templates[name]) {
-      fn = _compiled_templates[name];
-    } else {
-      var templ = RaaRaa.template(name);
-      fn = jade.compile(templ);
-      _compiled_templates[name] = fn;
-    }
+    var el = document.createElement('div');
     
-    el.innerHTML = fn(obj);
-    return el.children[0];
+    var fn = renderTemplate(name);
+
+    return fn(obj);
   };
 
 })();

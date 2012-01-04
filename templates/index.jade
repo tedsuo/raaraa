@@ -21,7 +21,6 @@ block content
         h1 RaaRaa
         h3 Party Party
       #header-account
-        a#logout-btn(href='/logout') Logout
       a#invite-btn(href='#invite') Invite
       #content-selector
         input#show-photos(type='checkbox')
@@ -37,5 +36,8 @@ block content
         #col-3
       #footer
 
-  script(type="text/template", id="user-badge-template", src="/templates/user-badge.jade")
+  script(type="text/template", id="user-badge-template")
+    | h3.name= model.username
+    | a#logout-btn(href='/logout') Logout
+
 

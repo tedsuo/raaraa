@@ -59,5 +59,6 @@ RaaRaa.prototype = {
 RaaRaa.prototype.__proto__ = EventEmitter.prototype;
 
 // RaaRaa client is a singleton
-module.exports = new RaaRaa();
+var rr = module.exports = new RaaRaa();
 
+rr.on('error', function(e) { console.error(e.toString()) });

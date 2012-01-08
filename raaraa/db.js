@@ -9,7 +9,7 @@ var db = module.exports = mongoq(connectUrl);
 
 // ##Users
 //
-// usernames are unique
+// username key is unique
 //
 db.ensureIndex(
   "users", 
@@ -26,13 +26,14 @@ db.ensureIndex(
     if(err) throw err;
   }
 );
+
 // ##Party
 //
-// usernames are unique
+// name:user_id key is unique
 //
 db.ensureIndex(
   "parties", 
-  { username: 1 }, 
+  { name: 1, user_id: 1 }, 
   { unique: true },
   function(err) {
     if(err) throw err;

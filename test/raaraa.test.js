@@ -31,7 +31,7 @@ module.exports = {
   },
 
   "models loaded": function(test) {
-    var expectedModels = ['Users'];
+    var expectedModels = ['Users','Party'];
     test.expect(expectedModels.length);
     expectedModels.forEach(function(key) {
       test.ok(rr[key], key+" model not loaded");

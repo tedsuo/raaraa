@@ -1,3 +1,4 @@
 module.exports = {
-  Users: require('./user').Users
+  Users: require('./user').Users,
+  Party: require('./party').Party
 }

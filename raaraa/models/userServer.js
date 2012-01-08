@@ -4,13 +4,21 @@
 //
 
 var MongoStorage = require("../lib/mongo_storage"),
-crypto = require("crypto");
+    crypto = require("crypto");
 
-module.exports = [{
-  // instance methods and properties defined here
-  storage: new MongoStorage({ collectionName: "users" })
+var UserServer = module.exports = [{
+
+// set backend to Mongo
+  storage:  new MongoStorage({
+              collectionName: "users" 
+            })
+
+// instance methods and properties defined here
+
 }, {
-  // static methods and properties defined here
+
+// static methods and properties defined here
+
   signup: function(user_data, cb) {
     var self = this;
 

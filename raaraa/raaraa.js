@@ -18,11 +18,7 @@ var RaaRaa = function RaaRaa(){
   this.lib_dirname = __dirname+"/";
   this._logged_in_users = {}; // TODO: use redis
   this._initializeModels();
-  this._dbInitialize(function(err){
-    if(err){
-      this.emit('error',err);
-      return;
-    }
+  process.nextTick(function(){
     this.emit('ready');
   }.bind(this));
 };
@@ -33,17 +29,6 @@ RaaRaa.prototype = {
     _.each(models,function(model,model_name){
       this[model_name] = model;
     }.bind(this))
-  },
-
-  _dbInitialize: function(cb) {
-    db.ensureIndex(
-      "users", 
-      { username: 1 }, 
-      { unique: true },
-      function(err) {
-        cb(err);
-      }
-    );
   },
 
   setUser: function(session_id, user) {

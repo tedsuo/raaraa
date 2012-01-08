@@ -45,7 +45,7 @@ function logIn(user, browser, cb) {
 
 module.exports = testMaker({
   beforeAll: function(next) {
-    server.on("listening", function() {
+    server.onReadyOnce(function() {
       db.collection("users")
         .remove()
         .done(function(){

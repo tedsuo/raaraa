@@ -1,17 +1,15 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var config = require("../config")[process.env.NODE_ENV],
-    express = require('express'),
+    HttpServer = require('./lib/http_server').HttpServer,
     routes = require('./routes'),
     static_server = require('./static.js')
     rr = require('../raaraa');
 
-
-var HOST = process.env.HOST || 'localhost';
-var PORT = process.env.PORT || 9002;
-
 // RaaRaa http server
-var app = module.exports = express.createServer();
+var app = module.exports = new HttpServer();
+app.host = process.env.HOST || 'localhost';
+app.port = process.env.PORT || 9002;
 
 console.info('RaaRaa v'+rr.version+': http and socket.io server');
 
@@ -25,13 +23,10 @@ app.set('view options', { layout: false });
 
 // setup routes
 routes.setup(app);
-app.use(app.router);
 
+// once we're ready, start taking connections
 rr.on('ready',function(){
-  // once we're ready, start taking connections
-  app.listen(PORT,HOST);
-  app.host = HOST;
-  app.port = PORT;
+  app.listen(app.port,app.host);
   console.info('RaaRaa http service listening on '+app.host+':'+app.port);
 });
 

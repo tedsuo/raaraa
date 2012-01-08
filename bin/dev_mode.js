@@ -47,6 +47,7 @@ function SubProcess(o){
   this.args = o.args || [];
   this.options = o.options || {};
   this.prompt = o.prompt || this.name;
+  this.bg_color = o.bg_color;
   
   // child processes seem to work better when they are passed
   // process.env
@@ -79,21 +80,37 @@ SubProcess.prototype.start =  function (){
 
   if(this.node && this.node.stdout){
     var self = this;
+
     this.node.stdout.on('data',function(data){
-      process.stdout.write(
-        clc[self.color](self.prompt+': ')+data
-      );
+      data.toString().split("\n").forEach(function(line){
+        if(!line) return;
+        var msg = clc[self.color](self.prompt+': ')+
+                  line+
+                  "\n";
+        if(self.bg_color) msg = clc[self.bg_color](msg);
+        process.stdout.write(msg);
+      });
     });
+
     this.node.stderr.on('data',function(data){
-      process.stderr.write(
-        clc[self.color](self.prompt+': ')+clc.red('ERROR ')+data
-      );
+      data.toString().split("\n").forEach(function(line){
+        if(!line) return;
+        var msg = clc[self.color](self.prompt+': ')+
+                  clc.red('ERROR ')+
+                  line+
+                  "\n";
+        if(self.bg_color) msg = clc[self.bg_color](msg);
+        process.stderr.write(msg);
+      })
     });
+
     this.node.on('exit',function(){
       console.dev('DEV MODE '+name+' exiting');
       console.dev(Date());
       self.node.pid = undefined;
     });
+
+    ++this.node_count;
   }
 };
   
@@ -113,10 +130,12 @@ SubProcess.prototype.restart = function(file_path){
   if(this.node.pid){
     console.dev('DEV MODE killing '+this.name+' '+this.node_count)
     this.node.kill();
+    this.node.on('exit',function(){
+      this.start();      
+    }.bind(this));
+  } else {
+    this.start();
   }
-
-  ++this.node_count;
-  this.start();
 };
 
 

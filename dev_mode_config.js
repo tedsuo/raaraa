@@ -28,6 +28,7 @@ module.exports = {
       name: 'Dev Server http:/localhost:9001/',
       prompt: 'R',
       color: 'magenta',
+      bg_color: 'bgMagenta',
       command: 'node',
       args: [__dirname+'/server'],
       options: { 
@@ -52,6 +53,7 @@ module.exports = {
       name: 'Docco',
       prompt: 'D',
       color: 'blue',
+      bg_color: 'bgBlue',
       command: 'node',
       on_startup: false,
       args: [ 

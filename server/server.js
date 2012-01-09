@@ -25,7 +25,7 @@ app.set('view options', { layout: false });
 routes.setup(app);
 
 // once we're ready, start taking connections
-rr.on('ready',function(){
+rr.onReady(function(){
   app.listen(app.port,app.host);
   console.info('RaaRaa http service listening on '+app.host+':'+app.port);
 });

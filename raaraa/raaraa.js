@@ -13,17 +13,34 @@ var VERSION = require('../package.json')['version'];
 // RaaRaa client
 var RaaRaa = function RaaRaa(){
   EventEmitter.call(this);
+  this._ready = false;
   this.version = VERSION;
   this.db = db;
   this.lib_dirname = __dirname+"/";
   this._logged_in_users = {}; // TODO: use redis
   this._initializeModels();
   process.nextTick(function(){
+    this._ready = true;
     this.emit('ready');
   }.bind(this));
 };
 
 RaaRaa.prototype = {
+
+  onReady: function(cb) {
+    if (this._ready) {
+      process.nextTick(cb);
+    }
+    this.on('ready', cb);
+  },
+
+  onReadyOnce: function(cb) {
+    if (this._ready) {
+      process.nextTick(cb);
+    } else {
+      this.once('ready', cb);
+    }
+  },
 
   _initializeModels: function(){
     _.each(models,function(model,model_name){

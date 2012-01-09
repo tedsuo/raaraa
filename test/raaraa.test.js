@@ -37,5 +37,16 @@ module.exports = {
       test.ok(rr[key], key+" model not loaded");
     });
     test.done();
-  }
+  },
+
+  "ready callbacks fired": function(test) {
+    test.expect(2);
+    rr.onReady(function() {
+      test.ok(true);
+      rr.onReadyOnce(function() {
+        test.ok(true);
+        test.done();
+      });
+    });
+  },
 };

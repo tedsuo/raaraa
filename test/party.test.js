@@ -4,8 +4,7 @@ process.env.NODE_ENV = 'test';
 // ### requires
 
 var rr = require("../raaraa"),
-    server = require('../server'),
-    db = rr.db,
+    db,
     h = require("./lib"),
     user_fixtures = require("./fixtures/users");
 
@@ -31,7 +30,10 @@ var setupFixtures = function(next){
 
 module.exports = h.makeTest({
   beforeAll: function(next) {
-    setupFixtures(next);
+    rr.onReadyOnce(function() {
+      db = rr.db;
+      setupFixtures(next);
+    });
   },
 
   setUp: function(next){
@@ -40,11 +42,12 @@ module.exports = h.makeTest({
       .done(function(err){
         if(err) throw err;
         next();
-      });    
+      });
   },
 
   afterAll: function(next) {
-    db.close(next);
+    db.close();
+    next();
   },
 
   "tests": {

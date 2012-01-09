@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
-var db = require("../raaraa").db,
+var rr = require("../raaraa"),
+db,
 server = require("../server"),
 zombie = require('zombie'),
 user_fixtures = require("./fixtures/users"),
@@ -46,6 +47,7 @@ function logIn(user, browser, cb) {
 module.exports = testMaker({
   beforeAll: function(next) {
     server.onReadyOnce(function() {
+      db = rr.db;
       db.collection("users")
         .remove()
         .done(function(){

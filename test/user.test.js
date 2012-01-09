@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var rr = require("../raaraa"),
-db = rr.db,
+db,
 h = require("./lib"),
 user_fixtures = require("./fixtures/users");
 
@@ -11,9 +11,12 @@ var USER = user_fixtures.randomUser();
 
 module.exports = h.makeTest({
   beforeAll: function(next) {
-    db.collection("users")
-      .remove()
-      .done(next);
+    rr.onReadyOnce(function() {
+      db = rr.db;
+      db.collection("users")
+        .remove()
+        .done(next);
+    });
   },
 
   afterAll: function(next) {

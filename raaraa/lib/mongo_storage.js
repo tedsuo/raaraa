@@ -1,6 +1,6 @@
 var DataStorage = require('./storage'),
 _ = require("underscore"),
-db = require("../db"),
+db = require("../raaraa").db, // NOTE: we assume raaraa has already fired the 'ready' event
 BSON = require("mongoq").BSON;
 
 var MongoStorage = module.exports = function MongoStorage(options) {

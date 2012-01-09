@@ -1,7 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var db = require('./db'),
-    models = require("./models"),
     EventEmitter = require('events').EventEmitter,
     _ = require('underscore'),
     Backbone = require("backbone");
@@ -15,11 +14,11 @@ var RaaRaa = function RaaRaa(){
   EventEmitter.call(this);
   this._ready = false;
   this.version = VERSION;
-  this.db = db;
   this.lib_dirname = __dirname+"/";
   this._logged_in_users = {}; // TODO: use redis
-  this._initializeModels();
-  process.nextTick(function(){
+  db.getDb(function(db) {
+    rr.db = db;
+    this._initializeModels();
     this._ready = true;
     this.emit('ready');
   }.bind(this));
@@ -43,6 +42,7 @@ RaaRaa.prototype = {
   },
 
   _initializeModels: function(){
+    var models = require("./models");
     _.each(models,function(model,model_name){
       this[model_name] = model;
     }.bind(this))

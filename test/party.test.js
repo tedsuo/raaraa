@@ -21,7 +21,7 @@ var setupFixtures = function(next){
       USER = user;
       PARTY = {
         name: 'test_party_'+Date.now(),
-        user_id: user.id
+        owner_id: user.id
       }
 
       next();
@@ -53,10 +53,8 @@ module.exports = h.makeTest({
 
       test.expect(2);
 
-      rr.Party.create({ 
-          name: PARTY.name,
-          user: USER
-        }, function(err, party){
+      rr.Party.create(PARTY
+        , function(err, party){
           if (h.checkError(err, test)) return;
 
           test.ok(party, "no party created");
@@ -76,7 +74,7 @@ module.exports = h.makeTest({
       test.expect(3);
 
       rr.Party.create(
-        { name: PARTY.name, user_id: USER.id },
+        PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
 
@@ -87,7 +85,7 @@ module.exports = h.makeTest({
           );
 
           rr.Party.create(
-            { name: PARTY.name, user_id: USER.id },
+            PARTY,
             function(err, party) {
               test.ok(err, "expected duplicate party error to be thrown");
               test.ok(!party, "duplicate should not have been created"); 
@@ -103,7 +101,7 @@ module.exports = h.makeTest({
       test.expect(2);
       
       rr.Party.create(
-        { name: PARTY.name, user_id: USER.id }, 
+        PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
           test.ok(party, "party doesn't exist");
@@ -130,7 +128,7 @@ module.exports = h.makeTest({
     "user can delete party": function(test) {
       test.expect(1);
       rr.Party.create(
-        { name: PARTY.name, user_id: USER.id }, 
+        PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
           
@@ -138,11 +136,11 @@ module.exports = h.makeTest({
             if (h.checkError(err, test)) return;
 
             rr.Party.find(
-              { name: PARTY.name, user_id: USER.id }, 
+              PARTY,
               function(err, parties) {
                 if (h.checkError(err, test)) return;
 
-                test.equal(parties.length, 0, "user still exists");
+                test.equal(parties.length, 0, "party still exists");
                 test.done();
               }
             );

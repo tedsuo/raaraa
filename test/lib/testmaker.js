@@ -1,6 +1,10 @@
 var _ = require("underscore");
 
 module.exports = function(options){
+  if (!options.tests) {
+    throw new Error("No 'tests' key found in test definitions");
+  }
+
   var testsRun = 0, totalTests = Object.keys(options.tests).length;
 
   var beforeEach = function(next) {

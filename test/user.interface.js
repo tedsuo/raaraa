@@ -69,9 +69,7 @@ module.exports = testMaker({
     "hit homepage": function(test) {
       test.expect(1);
 
-      var browser = createBrowser();
-
-      browser.visit('/', function(e, browser) {
+      createBrowser().visit('/', function(e, browser) {
         test.ok(browser.success, "Failed to load homepage");
         test.done();
       });
@@ -81,9 +79,8 @@ module.exports = testMaker({
       test.expect(1);
 
       var user = user_fixtures.randomUser();
-      db.collection("users").insert(user).done(function(user) {
-        var browser = createBrowser();
-        signUp(user, browser, function(e, browser) {
+      db.collection("users").insert(user).done(function(u) {
+        signUp(user, createBrowser(), function(e, browser) {
           test.equal(browser.text("#errors"),
                      "Error: User already exists");
           test.done();
@@ -92,17 +89,31 @@ module.exports = testMaker({
     },
 
     "sign up form not valid": function(test) {
-      test.expect(1);
+      test.expect(3);
 
       var user = user_fixtures.randomUser();
       user.password_verify = 'asdf';
-      var browser = createBrowser();
 
-      signUp(user, browser, function(e, browser) {
-          test.equal(browser.text("#errors"),
-                     "Error: The passwords you entered do not "
-                     + "match. Please try again.");
-          test.done();
+      signUp(user, createBrowser(), function(e, browser) {
+        test.equal(browser.text("#errors"),
+                   "Error: The passwords you entered do not "
+                   + "match. Please try again.");
+
+        signUp({ username: '', password: '', password_verify: '' }
+               , createBrowser()
+               , function(e, browser) {
+                 test.equal(browser.text("#errors"),
+                            "Error: Please enter a username");
+                 
+                 signUp({ username: 'test', password: '', password_verify: '' }
+                        , createBrowser()
+                        , function(e, browser) {
+                          test.equal(browser.text("#errors"),
+                                     "Error: Please enter a password");
+                          
+                          test.done();
+                        });
+               });
       });
     },
 
@@ -205,22 +216,46 @@ module.exports = testMaker({
 
       logIn({ username: sign_up_user.username,
               password: 'WRONG' }, createBrowser(), function(e, browser) {
-        test.ok(browser.success,
-                browser.statusCode+" Error: "+browser.html());
+                test.ok(browser.success,
+                        browser.statusCode+" Error: "+browser.html());
 
-        if(browser.error) {
-          test.ifError(browser.error);
-          return test.done();
-        }
+                if(browser.error) {
+                  test.ifError(browser.error);
+                  return test.done();
+                }
 
-        test.ok(browser.html("#signup"),
-                "We should be seeing the login page");
-        test.ok(!browser.html("#logout-btn"),
-                "We should not be seeing a logout button");
-        test.done();
-      });
+                test.ok(browser.html("#signup"),
+                        "We should be seeing the login page");
+                test.ok(!browser.html("#logout-btn"),
+                        "We should not be seeing a logout button");
+                test.done();
+              });
     },
 
+    "login form not valid": function(test) {
+      test.expect(3);
+
+      logIn({ username: '', password: '' }
+            , createBrowser()
+            , function(e, browser) {
+              test.ok(browser.success,
+                      browser.statusCode+" Error: "+browser.html());
+
+              if(browser.error) {
+                test.ifError(browser.error);
+                return test.done();
+              }
+
+              test.equal(browser.text("#errors"), "Error: Please enter a username");
+
+              logIn({ username: 'test', password: '' }
+                    , browser
+                    , function(e, browser) {
+                      test.equal(browser.text("#errors"), "Error: Please enter a password");
+                      test.done();
+                    });
+            });
+    },
   }
 });
 

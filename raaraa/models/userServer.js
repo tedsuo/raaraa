@@ -22,10 +22,8 @@ var UserServer = module.exports = [{
   signup: function(user_data, cb) {
     var self = this;
 
-    if (user_data.password != user_data.verify) {
-      cb(new Error("The passwords you entered do not match. Please try again."));
-      return;
-    }
+    var err = this.validateSignup(user_data);
+    if (err) { cb(new Error(err)); return; }
 
     this.findOne({ username: user_data.username }, function(err, user) {
       if (err) { cb(err); return; };
@@ -46,6 +44,9 @@ var UserServer = module.exports = [{
   },
 
   login: function(user_data, cb) {
+    var err = this.validateLogin(user_data);
+    if (err) { cb(new Error(err)); return; }
+
     this.findOne(
       { username: user_data.username,
         password: this.hashPass(user_data.password) },

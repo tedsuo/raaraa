@@ -30,14 +30,26 @@ block content
         input#show-friends(type='checkbox')
         label(for='show-friends') Friends
       .clear
-      #canvas
-        #col-1
-        #col-2
-        #col-3
-      #footer
+    #canvas
+      #col-1
+        button#add-party Add A Party
+
+      #col-2
+      #col-3
+    #footer
 
   script(type="text/template", id="user-badge-template")
     | h3.name= model.username
     | a#logout-btn(href='/logout') Logout
 
 
+  script(type="text/template", id="party-edit-template")
+    | form(id="edit-party-"+model.cid)
+    |   h3.action= model.action+" "+model.name
+    |   .errors
+    |   input(name="owner_id", type="hidden", value=model.owner_id)
+    |   .field
+    |     label(for="name")
+    |     input(type="text", value=model.name)
+    |   a.button.submit(href='#') Submit
+    |   a.button.cancel(href='#') Cancel

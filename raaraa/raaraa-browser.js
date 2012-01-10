@@ -6,6 +6,8 @@ if (!RaaRaa) var RaaRaa = {};
 
   // initialize
   RaaRaa.init = function(options) {
+    var app_model = new RaaRaa.App();
+
     var socket
       = io.connect("http://" + options.socket.host + ":" + options.socket.port);
 
@@ -17,8 +19,9 @@ if (!RaaRaa) var RaaRaa = {};
     socket.on('current user', function(user_json) {
       console.debug("got current user");
       var model = new RaaRaa.Users();
-      RaaRaa.current_user = model;
       model.set(user_json);
+
+      app_model.set({ current_user: model });
 
       RaaRaa.user_badge = new RaaRaa.views.UserBadgeView({
         model: model,
@@ -45,6 +48,10 @@ if (!RaaRaa) var RaaRaa = {};
     });
 
     RaaRaa.socket = socket;
+
+    var main_page_view = new RaaRaa.views.MainPage({
+      model: app_model
+    });
   };
 
   RaaRaa.template = function(name) {

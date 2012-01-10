@@ -34,9 +34,19 @@ exports.setup = function(app) {
       script_paths: [
         'raaraa/raaraa-browser.js',
         'raaraa/lib/modelbase.js',
+
+        // models
+        'raaraa/models/app.js',
         'raaraa/models/user.js',
+        'raaraa/models/party.js',
+
         'raaraa/lib/viewbase.js',
-        'raaraa/views/user.js'
+        
+        // views
+        'raaraa/views/app.js',
+        'raaraa/views/user.js',
+        'raaraa/views/party.js',
+        
       ]
     });
 

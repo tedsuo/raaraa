@@ -52,8 +52,25 @@ RaaRaa.prototype = {
     this._logged_in_users[session_id] = user;
   },
 
-  getUser: function(session_id) {
-    return this._logged_in_users[session_id];
+  getUser: function(session_id, cb) {
+    var user = this._logged_in_users[session_id];
+    if (user) {
+      cb(user);
+      return;
+    }
+    var self = this;
+
+    // NOTE: the following works only because we are using the user ID as
+    // the session token.
+    this.Users.findOne({ _id: session_id }, function(err, user) {
+      if (user) {
+        self.setUser(session_id, user);
+        cb(user);
+        return;
+      }
+      console.error("User does not exist");
+      cb(null);
+    });
   }
 };
 

@@ -15,16 +15,16 @@ io.sockets.on("connection", function(client) {
     // write rr.getUser() and rr.setUser()
     console.log("got session id " + session_id);
 
-    var user = rr.getUser(session_id);
-    
-    client.set("session", session_id, function() {
-      if (user) {
-        console.log("sending user");
-        client.emit("current user", user.toJSON());
-      } else {
-        console.log("error, no user");
-        client.emit("error", "User is not logged in, should not be setting up a socket");
-      }
+    rr.getUser(session_id, function(user) {
+      client.set("session", session_id, function() {
+        if (user) {
+          console.log("sending user");
+          client.emit("current user", user.toJSON());
+        } else {
+          console.log("error, no user");
+          client.emit("error", "User is not logged in, should not be setting up a socket");
+        }
+      });
     });
   });
 });

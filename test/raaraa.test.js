@@ -41,7 +41,7 @@ module.exports = h.makeTest({
     },
 
     "models loaded": function(test) {
-      var expectedModels = ['Users','Party'];
+      var expectedModels = ['Users','Parties'];
       test.expect(expectedModels.length);
       expectedModels.forEach(function(key) {
         test.ok(rr[key], key+" model not loaded");

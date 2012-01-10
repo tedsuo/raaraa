@@ -13,14 +13,14 @@
 
 
 
-  var Party = Model.extend({
+  var Parties = Model.extend({
     
   });
 
   if(server) {
-    exports.Party = Party.extend.apply(Party,
-                                      require("./partyServer"));
+    exports.Parties = Parties.extend.apply(Parties,
+                                           require("./partyServer"));
   } else {
-    exports.Party = Party;
+    exports.Parties = Parties;
   }
 })(this);

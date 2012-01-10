@@ -56,7 +56,7 @@ module.exports = h.makeTest({
 
       test.expect(2);
 
-      rr.Party.create(PARTY
+      rr.Parties.create(PARTY
         , function(err, party){
           if (h.checkError(err, test)) return;
 
@@ -76,7 +76,7 @@ module.exports = h.makeTest({
     "user cannot create duplicate party": function(test) {
       test.expect(3);
 
-      rr.Party.create(
+      rr.Parties.create(
         PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
@@ -87,7 +87,7 @@ module.exports = h.makeTest({
             "find() returned wrong party"
           );
 
-          rr.Party.create(
+          rr.Parties.create(
             PARTY,
             function(err, party) {
               test.ok(err, "expected duplicate party error to be thrown");
@@ -103,7 +103,7 @@ module.exports = h.makeTest({
     "user can update party": function(test) {
       test.expect(2);
       
-      rr.Party.create(
+      rr.Parties.create(
         PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
@@ -130,7 +130,7 @@ module.exports = h.makeTest({
 
     "user can delete party": function(test) {
       test.expect(1);
-      rr.Party.create(
+      rr.Parties.create(
         PARTY,
         function(err, party) {
           if (h.checkError(err, test)) return;
@@ -138,7 +138,7 @@ module.exports = h.makeTest({
           party.destroy(function(err) {
             if (h.checkError(err, test)) return;
 
-            rr.Party.find(
+            rr.Parties.find(
               PARTY,
               function(err, parties) {
                 if (h.checkError(err, test)) return;
